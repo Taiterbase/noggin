@@ -1,0 +1,109 @@
+{
+  "build": {
+    "beforeBuildCommand": "",
+    "beforeDevCommand": "",
+    "devPath": "http://localhost:3000",
+    "distDir": "../out"
+  },
+  "package": {
+    "productName": "noggin",
+    "version": "0.1.0"
+  },
+  "tauri": {
+    "allowlist": {
+      "all": true
+    },
+    "bundle": {
+      "active": true,
+      "category": "DeveloperTool",
+      "copyright": "",
+      "deb": {
+        "depends": []
+      },
+      "externalBin": [],
+      "icon": [
+        "icons/32x32.png",
+        "icons/128x128.png",
+        "icons/128x128@2x.png",
+        "icons/icon.icns",
+        "icons/icon.ico"
+      ],
+      "identifier": "com.noggin",
+      "longDescription": "",
+      "macOS": {
+        "entitlements": null,
+        "exceptionDomain": "",
+        "frameworks": [],
+        "providerShortName": null,
+        "signingIdentity": null
+      },
+      "resources": [],
+      "shortDescription": "",
+      "targets": "all",
+      "windows": {
+        "certificateThumbprint": null,
+        "digestAlgorithm": "sha256",
+        "timestampUrl": ""
+      }
+    },
+    "cli": {
+      "description": "Noggin is a place for your head.",
+      "beforeHelp": "",
+      "longDescription": "Noggin's CLI allows you to specify a file path to sync across your devices.",
+      "afterHelp": "",
+      "args": [
+        {
+          "name": "file",
+          "short": "f",
+          "takesValue": true,
+          "multiple": true,
+          "required": true
+        }
+      ],
+      "subcommands": {
+        "sync": {
+          "description": "Sync will manually force a sync across your devices. Pass in a file as an argument to write it to the database.",
+          "args": [
+            {
+              "name": "file",
+              "short": "f",
+              "takesValue": true,
+              "multiple": false,
+              "required": false
+            }
+          ]
+        },
+        "snip": {
+          "description": "Sync will manually force a sync across your devices. Pass in a file as an argument to write it to the database.",
+          "args": [
+            {
+              "name": "file",
+              "short": "f",
+              "takesValue": true,
+              "multiple": false,
+              "required": false
+            }
+          ]
+        }
+      }
+    },
+    "security": {
+      "csp": null
+    },
+    "updater": {
+      "active": false
+    },
+    "windows": [
+      {
+        "fullscreen": false,
+        "height": 760,
+        "resizable": true,
+        "title": "Noggin",
+        "width": 855,
+        "decorations": false,
+        "minWidth": 700,
+        "minHeight": 370
+      }
+    ]
+  }
+}

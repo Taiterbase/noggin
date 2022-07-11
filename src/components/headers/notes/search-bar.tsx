@@ -2,17 +2,34 @@ import CreateNoteIcon from "components/icons/create-note";
 import { NoteRequest } from "models/note";
 import { useRouter } from "next/router";
 import { useNote } from "providers/notes-provider";
+import { getSchema } from '@tiptap/core'
+import StarterKit from "@tiptap/starter-kit";
+import Document from "@tiptap/extension-document";
+
 
 export default function NoteSearchBar() {
     const useNotes = useNote();
     const router = useRouter();
 
+
     const createNote = (e) => {
         e.preventDefault();
         console.log(e);
+
+        let content = {
+            type: "doc",
+            content: [
+                {
+                    attrs: { level: 1 },
+                    content: [{ type: "text", text: " " }],
+                    type: "heading",
+                }
+            ]
+        }
+
         let newNote: NoteRequest = {
             id: -1,
-            content: "#",
+            content: JSON.stringify(content, null, 0),
             modified: 0,
             created: 0,
             archived: 0,

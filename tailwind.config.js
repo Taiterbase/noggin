@@ -16,11 +16,12 @@ module.exports = {
 				}
 			},
 		},
+
 	},
 	variants: {
 		extend: {
 			fill: ['hover', 'focus'],
 		},
 	},
-	plugins: [require("tailwind-scrollbar")],
+	plugins: [require('@tailwindcss/typography')],
 };

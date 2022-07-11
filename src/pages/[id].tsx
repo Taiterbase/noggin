@@ -1,4 +1,4 @@
-import { ContentEditable } from "components/notebox";
+import NoteBox from "components/notebox";
 import { getLayout as NotesLayout } from "layouts/notes"; // effectively getLayout from layouts/home
 import { NoteRequest, NoteResponse } from "models/note";
 import { useRouter } from "next/router";
@@ -17,6 +17,7 @@ function HomePage(props: any) {
     }
     const [note, setNote] = useState<NoteResponse>(notereq);
 
+
     useEffect(() => {
         try {
             let id = parseInt(router.query.id as string);
@@ -33,25 +34,24 @@ function HomePage(props: any) {
         }
     }, [router.query])
 
-    const processUpdate = (e) => {
-        console.log(e.currentTarget.innerText);
-        let note_req: NoteRequest = {
+    const processUpdate = (content: string) => {
+        console.log(`updating note ${note.id} with content ${content}`);
+        let noteReq: NoteRequest = {
             ...note,
-            content: e.currentTarget.innerText
+            content
         };
-        useNotes.updateNote(note_req).then(res => {
-            console.log("result of update", res);
+        useNotes.updateNote(noteReq).then((res) => {
             setNote(res);
-        }).catch(e => {
-            console.log("update fialed", e);
+            console.log(res);
+        }).catch((e) => {
+            console.error("Couldn't update note", e);
         })
     }
 
     return (
         <div className="p-7 mx-auto w-full h-full overflow-auto">
             <div className="max-w-[600px] h-auto overflow-auto flex-grow-0 m-auto">
-                <ContentEditable className="inline-block whitespace-pre-wrap bg-transparent w-full h-auto resize-none outline-none flex-grow-0"
-                    html={note.content} onBlur={null} onChange={e => processUpdate(e)} />
+                <NoteBox note={note} processUpdate={processUpdate} />
             </div>
         </div>
     )

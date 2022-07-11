@@ -77,11 +77,7 @@ pub async fn send_insert_note_request(note: NoteRequest) -> Result<NoteResponse>
 #[tauri::command]
 pub async fn update_note(note: NoteRequest) -> NoteResponse {
     match send_note_update_request(note).await {
-        Ok(mut n) => {
-            println!("UNPARSED CONTENT: {:?}", n.content);
-            let content = parser::parse(n.content.to_string());
-            n.content = content;
-            println!("PARSED CONTENT: {:?}", n.content);
+        Ok(n) => {
             return n;
         }
         Err(e) => {
@@ -159,11 +155,7 @@ async fn send_note_read_all_request() -> Result<Vec<NoteResponse>> {
 #[tauri::command]
 pub async fn read_note(note: NoteRequest) -> NoteResponse {
     match send_note_read_request(note).await {
-        Ok(mut n) => {
-            println!("UNPARSED CONTENT: {:?}", n.content);
-            let content = parser::parse(n.content.to_string());
-            n.content = content;
-            println!("PARSED CONTENT: {:?}", n.content);
+        Ok(n) => {
             return n;
         }
         Err(e) => {

@@ -5,7 +5,6 @@
 
 mod commands;
 mod models;
-mod parser;
 use crate::commands::database::create_tables;
 use crate::commands::notes::*;
 

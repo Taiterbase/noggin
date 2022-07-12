@@ -62,12 +62,13 @@ export function NotesProvider(props: { children: ReactNode }) {
         return new Promise((res, err) => {
             invoke("update_note", { note: note }).then((r: NoteResponse) => {
                 console.log("note response from update:", r)
+                if (r.id <= 0) throw new Error(`Couldn't update note ${JSON.stringify(note)}`);
                 setNotes(notes => {
                     return [r, ...notes.filter((n) => n.id != r.id)]
                 })
                 res(r);
-            }).catch(err => {
-                res(null);
+            }).catch(error => {
+                err(error);
             })
         });
     }

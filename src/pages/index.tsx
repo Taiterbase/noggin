@@ -6,11 +6,8 @@ function HomePage(props: any) {
     return (
         <div>
             <p>
-                This is where the markdown editor will go!
 
-                For now, we can make this a sweet cute design and fill it with
-
-                cute pictures and other cute things to be cute.
+                Home Page! Uneditable editor page with content created from the editor! Hooray!
             </p>
         </div>
     )

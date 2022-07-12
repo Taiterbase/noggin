@@ -17,7 +17,7 @@ export default function HeaderNote({ note, selected, setSelected }) {
     return <div onClick={e => {
         setSelected(id);
         router.push({ pathname: "/[id]", query: { id: id } })
-    }} className={`${noteStyle} h-16 pointer-events-auto w-full flex flex-row border-l-4 border-l-transparent hover:border-l-amber-400`}>
+    }} className={`h-16 pointer-events-auto w-full flex flex-row border-l-4 ${noteStyle} hover:border-l-amber-400`}>
         <div className="w-12 h-full p-1">
             <p className="text-sm">{`${diff.diff}${diff.unit}`}</p>
         </div>

@@ -1,7 +1,6 @@
 // Connect to the notes database
 use crate::commands::database::get_db_path;
 use crate::models::{NoteRequest, NoteResponse};
-use crate::parser::parser;
 use rusqlite::{Connection, Result};
 
 // Create a note
@@ -78,6 +77,7 @@ pub async fn send_insert_note_request(note: NoteRequest) -> Result<NoteResponse>
 pub async fn update_note(note: NoteRequest) -> NoteResponse {
     match send_note_update_request(note).await {
         Ok(n) => {
+            println!("{:?}", n);
             return n;
         }
         Err(e) => {
@@ -94,7 +94,10 @@ pub async fn update_note(note: NoteRequest) -> NoteResponse {
 }
 
 async fn send_note_update_request(note: NoteRequest) -> Result<NoteResponse> {
-    println!("REQUEST CONTENT {:?}", note.content);
+    println!(
+        "Note:\n\tnote.id: {:?}\n\tnote.modified: {:?}",
+        note.id, note.modified
+    );
     let dbconstr = get_db_path();
     let conn = Connection::open(dbconstr)?;
     let mut stmt = conn.prepare(

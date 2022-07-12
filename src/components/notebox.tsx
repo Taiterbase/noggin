@@ -1,12 +1,9 @@
 import { useEditor, EditorContent } from '@tiptap/react'
-import { NoteRequest } from 'models/note';
-import { useNote } from 'providers/notes-provider';
 import { useEffect } from 'react';
 import StarterKit from '@tiptap/starter-kit';
 
 const NoteBox = (props: any) => {
-    const { note, processUpdate } = props;
-
+    const { id, content, processUpdate } = props;
 
     const editor = useEditor({
         extensions: [
@@ -14,25 +11,31 @@ const NoteBox = (props: any) => {
         ],
         editorProps: {
             attributes: {
-                class: 'max-w-none text-xs  mx-auto focus:outline-none',
+                class: 'prose text-sm mx-auto focus:outline-none',
             },
         },
         autofocus: true,
-        content: note.content,
-        onUpdate({ editor }) {
-            let content = JSON.stringify(editor.getJSON(), null, 0);
-            processUpdate(content);
-        },
+        content: content
     });
 
-
     useEffect(() => {
-        if (!editor) return;
-        let content = JSON.parse(note.content);
-        editor.commands.setContent(content);
-    }, [note.id])
+        if (!editor) return
+        try {
+            editor.off("update");
+            editor.on("update", ({ editor }) => {
+                let noteContent = editor.getHTML();
+                console.log(`processing update for note ${id}`)
+                processUpdate(id, noteContent);
+            })
+            let noteContent = content;
+            editor.commands.clearContent();
+            editor.commands.setContent(noteContent);
+        } catch (e) {
+            console.error("Could not parse note JSON", e);
+        }
+    }, [id])
 
-    return <EditorContent editor={editor} onChange={props.onChange} />
+    return <EditorContent editor={editor} />
 }
 
 export default NoteBox;

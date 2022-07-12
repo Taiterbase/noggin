@@ -17,13 +17,11 @@ function HomePage(props: any) {
     }
     const [note, setNote] = useState<NoteResponse>(notereq);
 
-
     useEffect(() => {
         try {
             let id = parseInt(router.query.id as string);
             notereq.id = id;
             useNotes.readNote(notereq).then(res => {
-                console.log("here's the res", res)
                 setNote(res);
             }).catch(e => {
                 console.log("couldn't load initial note", e);
@@ -34,25 +32,29 @@ function HomePage(props: any) {
         }
     }, [router.query])
 
-    const processUpdate = (content: string) => {
+    const processUpdate = (id: number, content: string) => {
         console.log(`updating note ${note.id} with content ${content}`);
         let noteReq: NoteRequest = {
             ...note,
-            content
+            id,
+            content,
         };
         useNotes.updateNote(noteReq).then((res) => {
             setNote(res);
-            console.log(res);
+            console.log("Update complete:", res);
         }).catch((e) => {
             console.error("Couldn't update note", e);
         })
     }
 
     return (
-        <div className="p-7 mx-auto w-full h-full overflow-auto">
-            <div className="max-w-[600px] h-auto overflow-auto flex-grow-0 m-auto">
-                <NoteBox note={note} processUpdate={processUpdate} />
+        <div className="mx-auto w-full h-full flex flex-col overflow-auto ">
+            <div className="p-7 pb-0 max-w-[600px] h-full w-full overflow-auto flex-grow-0 m-auto">
+                {note.id <= 0 ? <div>error</div> :
+                    <NoteBox id={note.id} content={note.content} processUpdate={processUpdate} />
+                }
             </div>
+            <div className="h-7 bg-amber-100"></div>
         </div>
     )
 }

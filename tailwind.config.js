@@ -23,5 +23,5 @@ module.exports = {
 			fill: ['hover', 'focus'],
 		},
 	},
-	plugins: [require('@tailwindcss/typography')],
+	plugins: [require("tailwind-fluid-typography")],//[require('@tailwindcss/typography')],
 };

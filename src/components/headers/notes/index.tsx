@@ -16,12 +16,14 @@ export default function HomeHeader(props: { title?: string }) {
     const [selected, setSelected] = useState(-1);
 
     useEffect(() => {
-        useNotes.readNotes().then(res => {
-            console.debug(`Notes List:`, res);
-            setNotes(res);
-        }).catch(e => {
-            console.error(e);
-        })
+        setInterval(() => {
+            useNotes.readNotes().then(res => {
+                console.debug(`Notes List:`, res);
+                setNotes(res);
+            }).catch(e => {
+                console.error(e);
+            });
+        }, 5000);
     }, [])
 
     useEffect(() => {
@@ -39,7 +41,7 @@ export default function HomeHeader(props: { title?: string }) {
             {/* notes search bar */}
             <NoteSearchBar />
             {/* notes list */}
-            <div className="h-[calc(100vh-2.5rem)] w-full overflow-y-auto  hover:scrollbar-thumb-gray-300 scrollbar-thumb-black scrollbar-track-transparent">
+            <div className="flex flex-col h-[calc(100vh-2.5rem)] overflow-y-auto">
                 {notes.map((note, i) => {
                     return <HeaderNote key={note.id} note={note} selected={selected === note.id} setSelected={setSelected} />
                 })}

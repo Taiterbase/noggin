@@ -48,13 +48,19 @@ function HomePage(props: any) {
     }
 
     return (
-        <div className="mx-auto w-full h-full flex flex-col overflow-auto ">
-            <div className="p-7 pb-0 max-w-[600px] h-full w-full overflow-auto flex-grow-0 m-auto">
-                {note.id <= 0 ? <div>error</div> :
+        <div className="mx-auto mb-5 w-full h-full flex flex-col overflow-auto">
+            <div className="p-7 min-w-[240px] w-full h-full flex-grow-0">
+                {note.id <= 0 ? null :
                     <NoteBox id={note.id} content={note.content} processUpdate={processUpdate} />
                 }
             </div>
-            <div className="h-7 bg-amber-100"></div>
+            <div className="absolute bottom-0 h-5 w-full flex flex-row flex-grow-0 bg-amber-100">
+                <div className="h-full flex flex-row justify-center flex-grow-0">
+                    <p className="text-xs">hey</p>
+                    <p className="text-xs">hey</p>
+                </div>
+                {/* word count, spacing, styling drop-downs, line|column navigator, date, history drop-down*/}
+            </div>
         </div>
     )
 }

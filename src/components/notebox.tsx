@@ -11,12 +11,16 @@ const NoteBox = (props: any) => {
         ],
         editorProps: {
             attributes: {
-                class: 'prose text-sm mx-auto focus:outline-none',
+                class: 'not-prose min-h-[calc(100vh-4.75rem)] mx-auto text-sm focus:outline-none',
             },
         },
         autofocus: true,
-        content: content
+        content: ""
     });
+
+    useEffect(() => {
+
+    }, [])
 
     useEffect(() => {
         if (!editor) return
@@ -35,7 +39,9 @@ const NoteBox = (props: any) => {
         }
     }, [id])
 
-    return <EditorContent editor={editor} />
+    return (
+        <EditorContent editor={editor} />
+    )
 }
 
 export default NoteBox;

@@ -5,6 +5,7 @@ use serde::Serialize;
 pub struct NoteResponse {
     pub id: i64,
     pub content: String,
+    pub title: String,
     pub modified: i64,
     pub created: i64,
     pub archived: i64,

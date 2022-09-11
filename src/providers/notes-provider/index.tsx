@@ -10,7 +10,6 @@ export function NotesProvider(props: { children: ReactNode }) {
 
     useEffect(() => {
         invoke("read_notes").then((res: NoteResponse[]) => {
-            console.log("result: ", res);
             setNotes(res);
         }).catch(e => {
             console.log("hello big error")
@@ -35,7 +34,6 @@ export function NotesProvider(props: { children: ReactNode }) {
     const readNotes = (): Promise<NoteResponse[]> => {
         return new Promise((res, err) => {
             invoke("read_notes", null).then((r: NoteResponse[]) => {
-                console.log(r);
                 res(r);
             }).catch(e => {
                 console.log("error in readNotes");
@@ -48,7 +46,6 @@ export function NotesProvider(props: { children: ReactNode }) {
     const readNote = (note: NoteRequest): Promise<NoteResponse> => {
         return new Promise((res, err) => {
             invoke("read_note", { note: note }).then((r: NoteResponse) => {
-                console.log("read the note:", r);
                 res(r);
             }).catch(e => {
                 console.log("error in readNote");
@@ -61,7 +58,6 @@ export function NotesProvider(props: { children: ReactNode }) {
     const updateNote = (note: NoteRequest): Promise<NoteResponse> => {
         return new Promise((res, err) => {
             invoke("update_note", { note: note }).then((r: NoteResponse) => {
-                console.log("note response from update:", r)
                 if (r.id <= 0) throw new Error(`Couldn't update note ${JSON.stringify(note)}`);
                 setNotes(notes => {
                     return [r, ...notes.filter((n) => n.id != r.id)]

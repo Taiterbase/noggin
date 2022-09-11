@@ -16,6 +16,7 @@ pub async fn create_note(note: NoteRequest) -> NoteResponse {
             return NoteResponse {
                 id: -1,
                 content: "Couldn't create a new note.".to_owned(),
+                title: "".to_owned(),
                 modified: 0,
                 created: 0,
                 archived: 0,
@@ -65,6 +66,7 @@ pub async fn send_insert_note_request(note: NoteRequest) -> Result<NoteResponse>
         Ok(NoteResponse {
             id: row.get(0)?,
             content: row.get(1)?,
+            title: "".to_owned(),
             modified: row.get(2)?,
             created: row.get(3)?,
             archived: row.get(4)?,
@@ -85,6 +87,7 @@ pub async fn update_note(note: NoteRequest) -> NoteResponse {
             return NoteResponse {
                 id: -1,
                 content: "Couldn't update note.".to_owned(),
+                title: "".to_owned(),
                 modified: 0,
                 created: 0,
                 archived: 0,
@@ -110,6 +113,7 @@ async fn send_note_update_request(note: NoteRequest) -> Result<NoteResponse> {
         Ok(NoteResponse {
             id: row.get(0)?,
             content: row.get(1)?,
+            title: "".to_owned(),
             modified: row.get(2)?,
             created: row.get(3)?,
             archived: row.get(4)?,
@@ -141,6 +145,7 @@ async fn send_note_read_all_request() -> Result<Vec<NoteResponse>> {
         Ok(NoteResponse {
             id: row.get(0)?,
             content: row.get(1)?,
+            title: "".to_owned(),
             modified: row.get(2)?,
             created: row.get(3)?,
             archived: row.get(4)?,
@@ -166,6 +171,7 @@ pub async fn read_note(note: NoteRequest) -> NoteResponse {
             return NoteResponse {
                 id: -1,
                 content: format!("couldn't fetch note"),
+                title: "".to_owned(),
                 archived: 0,
                 created: 0,
                 modified: 0,
@@ -183,6 +189,7 @@ async fn send_note_read_request(note: NoteRequest) -> Result<NoteResponse> {
         Ok(NoteResponse {
             id: row.get(0)?,
             content: row.get(1)?,
+            title: "".to_owned(),
             modified: row.get(2)?,
             created: row.get(3)?,
             archived: row.get(4)?,

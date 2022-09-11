@@ -9,6 +9,7 @@ export type NoteRequest = {
 export type NoteResponse = {
     id: number;
     content: string;
+    title: string;
     modified: number;
     created: number;
     archived: number;

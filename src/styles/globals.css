@@ -5,17 +5,9 @@
 /* global CSS styles can go here */
 
 @layer base {
-    h1 {
-        @apply text-4xl font-normal;
-    }
-
     h1::before {
         content: "h1 ";
         @apply text-xs text-slate-500;
-    }
-
-    h2 {
-        @apply text-3xl font-normal;
     }
 
     h2::before {
@@ -23,26 +15,14 @@
         @apply text-xs text-slate-500;
     }
 
-    h3 {
-        @apply text-2xl font-normal;
-    }
-
     h3::before {
         content: "h3 ";
         @apply text-xs text-slate-500;
     }
 
-    h4 {
-        @apply text-xl;
-    }
-
     h4::before {
         content: "h4 ";
         @apply text-xs text-slate-500;
-    }
-
-    h5 {
-        @apply text-lg;
     }
 
     h5::before {
@@ -51,17 +31,9 @@
 
     }
 
-    h6 {
-        @apply text-base;
-    }
-
     h6::before {
         content: "h6 ";
         @apply text-xs text-slate-500;
-    }
-
-    a {
-        @apply text-blue-600 underline;
     }
 
     a::before {
@@ -69,17 +41,9 @@
         @apply text-sm cursor-pointer;
     }
 
-    p {
-        @apply my-[1px]
-    }
-
     p::before {
         /* content: ""; 
         @apply text-sm cursor-pointer; */
-    }
-
-    blockquote {
-        @apply text-base font-sans font-bold border-l-4 border-slate-700 pl-2 bg-amber-100 bg-opacity-75 rounded;
     }
 
     blockquote::before {
@@ -92,11 +56,7 @@
         @apply text-sm cursor-pointer;
     }
 
-    code {
-        @apply bg-black bg-opacity-10 p-1 rounded;
-    }
-
-    code::before {
+    /*  code::before {
         content: "`";
         @apply text-xs;
     }
@@ -104,18 +64,10 @@
     code::after {
         content: "`";
         @apply text-xs;
-    }
+    } */
 
     pre {
         @apply bg-black bg-opacity-25 p-[.75px] rounded-sm my-1;
-    }
-
-    pre::before {
-        /* content: "```"; */
-    }
-
-    pre::after {
-        /* content: "```"; */
     }
 
     pre code {

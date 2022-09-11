@@ -26,7 +26,6 @@ export default function NoteSearchBar() {
             archived: 0,
         }
         useNotes.createNote(newNote).then(res => {
-            console.log(res);
             if (res.id >= 0) {
                 router.push({ pathname: "/[id]", query: { id: res.id, note: JSON.stringify(res) } });
             } else {

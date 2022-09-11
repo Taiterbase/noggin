@@ -18,7 +18,6 @@ export default function HomeHeader(props: { title?: string }) {
     useEffect(() => {
         setInterval(() => {
             useNotes.readNotes().then(res => {
-                console.debug(`Notes List:`, res);
                 setNotes(res);
             }).catch(e => {
                 console.error(e);

@@ -1,9 +1,11 @@
-use models::NoteResponse;
+use crate::models::note_query::NotePreview;
+use unicode_segmentation::UnicodeSegmentation;
 
-pub async fn get_notes_title(notes: Vec<NoteResponse>) -> Vec<NoteResponse> {
-    notes
-}
-
-async fn parse_note_title(note: NoteResponse) -> NoteResponse {
-    note
+pub fn generate_preview(content: String) -> NotePreview {
+    let words = content.unicode_words().collect::<Vec<&str>>();
+    let preview: NotePreview = NotePreview {
+        title: words[0..1].join(" "),
+        content: words[1..2].join(" "),
+    };
+    return preview;
 }

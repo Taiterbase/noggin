@@ -1,32 +1,31 @@
 // Connect to the notes database
 use crate::commands::database::get_db_path;
-use crate::models::{NoteRequest, NoteResponse};
+use crate::models::{note_intake::*, note_query::*};
+use crate::utils::notes::generate_preview;
 use rusqlite::{Connection, Result};
 
 // Create a note
 #[tauri::command]
-pub async fn create_note(note: NoteRequest) -> NoteResponse {
-    println!("content: {:?}", note.content);
+pub async fn create_note(note: NoteInsertRequest) -> (NoteCardResponse, NoteQueryResponse) {
     match send_insert_note_request(note).await {
         Ok(res) => {
             return res;
         }
         Err(_e) => {
-            println!("Uh oh, something went wrong here!!");
-            return NoteResponse {
-                id: -1,
-                content: "Couldn't create a new note.".to_owned(),
-                title: "".to_owned(),
-                modified: 0,
-                created: 0,
-                archived: 0,
-            };
+            return (
+                NoteCardResponse::default(),
+                NoteQueryResponse {
+                    id: -1,
+                    content: "Couldn't create a new note.".to_owned(),
+                },
+            )
         }
     }
 }
 
-pub async fn send_insert_note_request(note: NoteRequest) -> Result<NoteResponse> {
-    println!("Creating a note with content {:?}", note.content);
+pub async fn send_insert_note_request(
+    note: NoteInsertRequest,
+) -> Result<(NoteCardResponse, NoteQueryResponse)> {
     let dbconstr = get_db_path();
     let conn = Connection::open(dbconstr)?;
     let mut stmt = conn.prepare(
@@ -46,16 +45,9 @@ pub async fn send_insert_note_request(note: NoteRequest) -> Result<NoteResponse>
     )?;
     let _createres = stmt.execute([note.content]);
     let id = conn.last_insert_rowid();
-    println!("here's the id!!! {:?}", id);
     stmt = conn.prepare(
         "
-            SELECT
-                id, 
-                content, 
-                modified, 
-                created,
-                archived,
-                deleted
+            SELECT id, content, modified, created, archived
             FROM notes 
             WHERE id = ?
             ORDER BY created DESC
@@ -63,67 +55,95 @@ pub async fn send_insert_note_request(note: NoteRequest) -> Result<NoteResponse>
         ",
     )?;
     let noteres = stmt.query_row([id], |row| {
-        Ok(NoteResponse {
-            id: row.get(0)?,
-            content: row.get(1)?,
-            title: "".to_owned(),
-            modified: row.get(2)?,
-            created: row.get(3)?,
-            archived: row.get(4)?,
-        })
+        let content: String = match row.get(1) {
+            Ok(str) => str,
+            Err(e) => format!("{}", e),
+        };
+        // generate preview
+        let preview: NotePreview = generate_preview(content);
+        Ok((
+            NoteCardResponse {
+                id: row.get(0)?,
+                preview,
+                modified: row.get(2)?,
+                created: row.get(3)?,
+                archived: row.get(4)?,
+            },
+            NoteQueryResponse {
+                id: row.get(0)?,
+                content: row.get(1)?,
+            },
+        ))
     });
     return noteres;
 }
 
 #[tauri::command]
-pub async fn update_note(note: NoteRequest) -> NoteResponse {
+pub async fn update_note(note: NoteContentUpdateRequest) -> (NoteCardResponse, NoteQueryResponse) {
+    println!("Received update request!");
     match send_note_update_request(note).await {
         Ok(n) => {
-            println!("{:?}", n);
             return n;
         }
         Err(e) => {
             println!("Error! {:?}", e);
-            return NoteResponse {
-                id: -1,
-                content: "Couldn't update note.".to_owned(),
-                title: "".to_owned(),
-                modified: 0,
-                created: 0,
-                archived: 0,
-            };
+            return (
+                NoteCardResponse::default(),
+                NoteQueryResponse {
+                    id: -1,
+                    content: "Couldn't update note.".to_owned(),
+                },
+            );
         }
     }
 }
 
-async fn send_note_update_request(note: NoteRequest) -> Result<NoteResponse> {
-    println!(
-        "Note:\n\tnote.id: {:?}\n\tnote.modified: {:?}",
-        note.id, note.modified
-    );
+async fn send_note_update_request(
+    note: NoteContentUpdateRequest,
+) -> Result<(NoteCardResponse, NoteQueryResponse)> {
     let dbconstr = get_db_path();
     let conn = Connection::open(dbconstr)?;
     let mut stmt = conn.prepare(
-        "UPDATE notes SET content=(?1), modified=strftime('%s', 'now'), archived=(?2) WHERE id = (?3);",
+        "
+            UPDATE notes 
+            SET content=(?1), modified=strftime('%s', 'now') 
+            WHERE id = (?2);
+        ",
     )?;
-    let _updateres = stmt.execute([note.content, note.archived.to_string(), note.id.to_string()]);
-    stmt = conn
-        .prepare("SELECT id, content, modified, created, archived FROM notes WHERE id = (?1);")?;
+    let _updateres = stmt.execute([note.content, note.id.to_string()]);
+    stmt = conn.prepare(
+        "
+            SELECT id, content, modified, created, archived
+            FROM notes 
+            WHERE id = (?1);
+        ",
+    )?;
     let noteres = stmt.query_row([note.id], |row| {
-        Ok(NoteResponse {
-            id: row.get(0)?,
-            content: row.get(1)?,
-            title: "".to_owned(),
-            modified: row.get(2)?,
-            created: row.get(3)?,
-            archived: row.get(4)?,
-        })
+        let content: String = match row.get(1) {
+            Ok(str) => str,
+            Err(e) => format!("{}", e),
+        };
+        // generate preview
+        let preview: NotePreview = generate_preview(content);
+        Ok((
+            NoteCardResponse {
+                id: row.get(0)?,
+                preview,
+                modified: row.get(2)?,
+                created: row.get(3)?,
+                archived: row.get(4)?,
+            },
+            NoteQueryResponse {
+                id: row.get(0)?,
+                content: row.get(1)?,
+            },
+        ))
     });
     return noteres;
 }
 
 #[tauri::command]
-pub async fn read_notes() -> Vec<NoteResponse> {
+pub async fn read_note_list() -> Vec<NoteCardResponse> {
     match send_note_read_all_request().await {
         Ok(n) => {
             return n;
@@ -134,18 +154,23 @@ pub async fn read_notes() -> Vec<NoteResponse> {
     }
 }
 
-async fn send_note_read_all_request() -> Result<Vec<NoteResponse>> {
+async fn send_note_read_all_request() -> Result<Vec<NoteCardResponse>> {
     let dbconstr = get_db_path();
     let conn = Connection::open(dbconstr)?;
-    let mut notes: Vec<NoteResponse> = Vec::new();
+    let mut notes: Vec<NoteCardResponse> = Vec::new();
     let mut stmt = conn.prepare(
         "SELECT id, content, modified, created, archived FROM notes WHERE deleted <> 1 ORDER BY modified DESC;",
     )?;
     let res = stmt.query_map([], |row| {
-        Ok(NoteResponse {
+        let content: String = match row.get(1) {
+            Ok(str) => str,
+            Err(e) => format!("{}", e),
+        };
+        // generate preview
+        let preview: NotePreview = generate_preview(content);
+        Ok(NoteCardResponse {
             id: row.get(0)?,
-            content: row.get(1)?,
-            title: "".to_owned(),
+            preview,
             modified: row.get(2)?,
             created: row.get(3)?,
             archived: row.get(4)?,
@@ -161,39 +186,54 @@ async fn send_note_read_all_request() -> Result<Vec<NoteResponse>> {
 }
 
 #[tauri::command]
-pub async fn read_note(note: NoteRequest) -> NoteResponse {
+pub async fn read_note(note: NoteQuery) -> (NoteCardResponse, NoteQueryResponse) {
     match send_note_read_request(note).await {
         Ok(n) => {
             return n;
         }
         Err(e) => {
             println!("Error! {:?}", e);
-            return NoteResponse {
-                id: -1,
-                content: format!("couldn't fetch note"),
-                title: "".to_owned(),
-                archived: 0,
-                created: 0,
-                modified: 0,
-            };
+            return (
+                NoteCardResponse::default(),
+                NoteQueryResponse {
+                    id: -1,
+                    content: format!("couldn't fetch note"),
+                },
+            );
         }
     }
 }
 
-async fn send_note_read_request(note: NoteRequest) -> Result<NoteResponse> {
+async fn send_note_read_request(note: NoteQuery) -> Result<(NoteCardResponse, NoteQueryResponse)> {
     let dbconstr = get_db_path();
     let conn = Connection::open(dbconstr)?;
-    let mut stmt = conn
-        .prepare("SELECT id, content, modified, created, archived FROM notes WHERE id = (?1);")?;
+    let mut stmt = conn.prepare(
+        "
+        SELECT id, content, modified, created, archived
+        FROM notes 
+        WHERE id = (?1);
+        ",
+    )?;
     let noteres = stmt.query_row([note.id], |row| {
-        Ok(NoteResponse {
-            id: row.get(0)?,
-            content: row.get(1)?,
-            title: "".to_owned(),
-            modified: row.get(2)?,
-            created: row.get(3)?,
-            archived: row.get(4)?,
-        })
+        let content: String = match row.get(1) {
+            Ok(str) => str,
+            Err(e) => format!("{}", e),
+        };
+        // generate preview
+        let preview: NotePreview = generate_preview(content);
+        Ok((
+            NoteCardResponse {
+                id: row.get(0)?,
+                preview,
+                modified: row.get(2)?,
+                created: row.get(3)?,
+                archived: row.get(4)?,
+            },
+            NoteQueryResponse {
+                id: row.get(0)?,
+                content: row.get(1)?,
+            },
+        ))
     });
     return noteres;
 }

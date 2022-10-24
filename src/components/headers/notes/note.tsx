@@ -1,12 +1,12 @@
 import TimeSince from "components/time-since";
 import { useRouter } from "next/router";
 
-export default function HeaderNote({ note, selected, setSelected }) {
+export default function NoteCard({ noteCard, selected, setSelected }) {
     const router = useRouter();
-    const { id } = note;
-    const diff = TimeSince(note.modified);
-    let title = note.content || "";
-    const content = note.content ? note.content.substring(0, 27) : "A beautiful new note.";
+    const { id } = noteCard;
+    const diff = TimeSince(noteCard.modified);
+    let title = noteCard.preview.title;
+    const content = noteCard.preview.content;
     let noteStyle = "";
     if (selected) {
         noteStyle = "border-l-amber-400 bg-amber-100"
@@ -19,8 +19,17 @@ export default function HeaderNote({ note, selected, setSelected }) {
         <div className="w-12 h-full p-1">
             <p className="text-sm">{`${diff.diff}${diff.unit}`}</p>
         </div>
-        <div className="flex flex-row pl-2 w-full h-full border-b-[1px] border-b-slate-100">
-            <p>{`${content}`}</p>
+        <div className="flex flex-col w-full h-full border-b-[1px] border-b-slate-100">
+            <div className=""
+            // title
+            >
+                <h3 className="before:content-['']">{title}</h3>
+            </div>
+            <div className=""
+            // content
+            >
+                <p>{content}</p>
+            </div>
         </div>
     </div>
 }

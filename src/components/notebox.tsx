@@ -99,7 +99,6 @@ const NoteBox = (props: any) => {
             },
         },
         autofocus: true,
-        content: ""
     });
 
     useEffect(() => {
@@ -112,6 +111,7 @@ const NoteBox = (props: any) => {
             editor.off("update");
             editor.on("update", ({ editor }) => {
                 let noteContent = editor.getHTML();
+                console.log("note content", noteContent)
                 processUpdate(id, noteContent);
             })
             let noteContent = content;

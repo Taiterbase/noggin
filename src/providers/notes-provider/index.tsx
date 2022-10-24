@@ -1,15 +1,15 @@
 import { invoke } from "@tauri-apps/api/tauri";
-import { NoteProviderValues, NoteRequest, NoteResponse } from "models/note";
+import { NoteProviderValues, NoteCardResponse, NoteInsertRequest, QueryResponse, NoteReadRequest, NoteUpdateRequest, NoteDeleteRequest, NoteArchiveRequest } from "models/note";
 import React, { createContext, ReactNode, useContext, useEffect, useState } from "react";
 
 export const NotesContext = createContext<NoteProviderValues>(null);
 
 export function NotesProvider(props: { children: ReactNode }) {
-    const [notes, setNotes] = useState<NoteResponse[]>([])
+    const [notes, setNotes] = useState<NoteCardResponse[]>([])
     const { children } = props;
 
     useEffect(() => {
-        invoke("read_notes").then((res: NoteResponse[]) => {
+        invoke("read_note_list").then((res: NoteCardResponse[]) => {
             setNotes(res);
         }).catch(e => {
             console.log("hello big error")
@@ -17,13 +17,18 @@ export function NotesProvider(props: { children: ReactNode }) {
         })
     }, []);
 
-    const createNote = (note: NoteRequest): Promise<NoteResponse> => {
+    const createNote = (note: NoteInsertRequest): Promise<QueryResponse> => {
         return new Promise((res, err) => {
-            invoke("create_note", { note: note }).then((r: NoteResponse) => {
-                res(r);
+            invoke("create_note", { note: note }).then(r => {
+                return {
+                    noteCard: r[0],
+                    note: r[1],
+                }
+            }).then((r: QueryResponse) => {
                 setNotes(n => {
-                    return [r, ...n];
+                    return [r.noteCard, ...n];
                 });
+                res(r);
             }).catch(e => {
                 console.error(e);
                 err(e);
@@ -31,21 +36,26 @@ export function NotesProvider(props: { children: ReactNode }) {
         })
     }
 
-    const readNotes = (): Promise<NoteResponse[]> => {
+    const readNoteCards = (): Promise<NoteCardResponse[]> => {
         return new Promise((res, err) => {
-            invoke("read_notes", null).then((r: NoteResponse[]) => {
+            invoke("read_note_list", null).then((r: NoteCardResponse[]) => {
                 res(r);
             }).catch(e => {
-                console.log("error in readNotes");
+                console.log("error in readNoteCards");
                 console.error(e);
                 err(e);
             })
         });
     }
 
-    const readNote = (note: NoteRequest): Promise<NoteResponse> => {
+    const readNote = (note: NoteReadRequest): Promise<QueryResponse> => {
         return new Promise((res, err) => {
-            invoke("read_note", { note: note }).then((r: NoteResponse) => {
+            invoke("read_note", { note: note }).then(r => {
+                return {
+                    noteCard: r[0],
+                    note: r[1],
+                }
+            }).then((r: QueryResponse) => {
                 res(r);
             }).catch(e => {
                 console.log("error in readNote");
@@ -55,21 +65,34 @@ export function NotesProvider(props: { children: ReactNode }) {
         });
     }
 
-    const updateNote = (note: NoteRequest): Promise<NoteResponse> => {
+    const updateNote = (note: NoteUpdateRequest): Promise<QueryResponse> => {
         return new Promise((res, err) => {
-            invoke("update_note", { note: note }).then((r: NoteResponse) => {
-                if (r.id <= 0) throw new Error(`Couldn't update note ${JSON.stringify(note)}`);
-                setNotes(notes => {
-                    return [r, ...notes.filter((n) => n.id != r.id)]
-                })
+            console.log("updating note in provider", note);
+            invoke("update_note", { note: note }).then((r: QueryResponse) => {
+                console.log(r);
+                return {
+                    noteCard: r[0],
+                    note: r[1],
+                }
+            }).then((r: QueryResponse) => {
+                if (r.noteCard.id <= 0) throw new Error(`Couldn't update note ${JSON.stringify(note)}`);
                 res(r);
+                setNotes(notes => {
+                    return [r.noteCard, ...notes.filter((n) => n.id != r.noteCard.id)]
+                })
             }).catch(error => {
                 err(error);
             })
         });
     }
 
-    const deleteNote = (note: NoteRequest): Promise<NoteResponse> => {
+    const deleteNote = (note: NoteDeleteRequest): Promise<QueryResponse> => {
+        return new Promise((res, err) => {
+            res(null);
+        });
+    }
+
+    const archiveNote = (note: NoteArchiveRequest): Promise<QueryResponse> => {
         return new Promise((res, err) => {
             res(null);
         });
@@ -81,9 +104,10 @@ export function NotesProvider(props: { children: ReactNode }) {
         notes,
         createNote,
         readNote,
-        readNotes,
+        readNoteCards,
         updateNote,
-        deleteNote
+        deleteNote,
+        archiveNote,
     };
 
     return (

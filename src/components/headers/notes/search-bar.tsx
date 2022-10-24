@@ -1,5 +1,5 @@
 import CreateNoteIcon from "components/icons/create-note";
-import { NoteRequest } from "models/note";
+import { NoteInsertRequest, QueryResponse } from "models/note";
 import { useRouter } from "next/router";
 import { useNote } from "providers/notes-provider";
 import { getSchema } from '@tiptap/core'
@@ -16,18 +16,12 @@ export default function NoteSearchBar() {
         e.preventDefault();
         console.log(e);
 
-        let content = "<h1> </h1>"
+        let content = "<h1> </h1>" // maybe consider using the json tiptap api instead of raw html
 
-        let newNote: NoteRequest = {
-            id: -1,
-            content: content,
-            modified: 0,
-            created: 0,
-            archived: 0,
-        }
-        useNotes.createNote(newNote).then(res => {
-            if (res.id >= 0) {
-                router.push({ pathname: "/[id]", query: { id: res.id, note: JSON.stringify(res) } });
+        let newNote: NoteInsertRequest = { content }
+        useNotes.createNote(newNote).then((res: QueryResponse) => {
+            if (res.noteCard.id >= 0) {
+                router.push({ pathname: "/[id]", query: { id: res.noteCard.id, note: JSON.stringify(res) } });
             } else {
                 throw new Error;
             }

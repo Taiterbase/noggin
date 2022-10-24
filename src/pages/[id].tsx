@@ -1,51 +1,49 @@
 //import NoteBox from "components/notebox";
 import Notebox from "components/notebox";
 import { getLayout as NotesLayout } from "layouts/notes"; // effectively getLayout from layouts/home
-import { NoteRequest, NoteResponse } from "models/note";
+import { NoteUpdateRequest, NoteResponse } from "models/note";
 import { useRouter } from "next/router";
 import { useNote } from "providers/notes-provider";
 import { useEffect, useState } from "react";
 
 function HomePage(props: any) {
     const useNotes = useNote();
-    const router = useRouter()
-    let notereq: NoteRequest = {
+    const router = useRouter();
+    let notereq: NoteUpdateRequest = {
         id: -1,
-        archived: 0,
         content: "",
-        created: 0,
-        modified: 0
-    }
-    const [note, setNote] = useState<NoteResponse>({ ...notereq, title: "" });
+    };
+    const [note, setNote] = useState<NoteResponse>({ ...notereq });
 
     useEffect(() => {
         try {
             let id = parseInt(router.query.id as string);
             notereq.id = id;
             useNotes.readNote({ ...notereq }).then(res => {
-                setNote(res);
+                console.log("Here's the note!!!", res[1]);
+                setNote(res.note);
             }).catch(e => {
                 console.log("couldn't load initial note", e);
-                setNote({ ...notereq, title: "" });
+                setNote({ ...notereq });
             })
         } catch (e) {
             console.log("error loading initial note", e);
         }
-    }, [router.query])
+    }, [router.query]);
 
     const processUpdate = (id: number, content: string) => {
-        console.log(`updating note ${note.id}`);
-        let noteReq: NoteRequest = {
-            ...note,
+        console.log(`updating note ${note.id} ${content}`);
+        let noteReq: NoteUpdateRequest = {
             id,
             content,
         };
-        useNotes.updateNote(noteReq).then((res) => {
-            setNote(res);
+        useNotes.updateNote(noteReq).then(res => res.note).then(note => {
+            console.log("note response after update", note);
+            setNote(note);
         }).catch((e) => {
             console.error("Couldn't update note", e);
         })
-    }
+    };
 
     return (
         <div className="mx-auto mb-5 w-full h-full flex flex-col overflow-auto">
@@ -59,7 +57,7 @@ function HomePage(props: any) {
                 {/* word count, spacing, styling drop-downs, line|column navigator, date, history drop-down*/}
             </div>
         </div>
-    )
+    );
 }
 
 HomePage.getLayout = NotesLayout;

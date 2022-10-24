@@ -1,35 +1,78 @@
-export type NoteRequest = {
+// Requests
+export type NoteReadRequest = {
     id: number;
-    content: string;
-    modified: number;
-    created: number;
-    archived: number;
 }
 
-export type NoteResponse = {
+export type NoteCardsRequest = {
+    // maybe user / auth stuff?
+}
+
+export type NoteInsertRequest = {
+    content: string;
+}
+
+export type NoteUpdateRequest = {
     id: number;
     content: string;
-    title: string;
-    modified: number;
-    created: number;
-    archived: number;
+}
+
+export type NoteArchiveRequest = {
+    id: number;
+}
+
+export type NoteDeleteRequest = {
+    id: number;
 }
 
 export type Note = {
     id: number;
     content: string;
-    title: string;
-    preview: string;
+}
+
+export type NoteCard = {
+    id: number;
+    preview: NotePreview;
     modified: number;
     created: number;
     archived: number;
 }
 
+export type NotePreview = {
+    title: string;
+    content: string;
+}
+
+// Responses
+
+export type NoteResponse = {
+    id: number;
+    content: string;
+    // word count, lines, time to read
+    // other generated values from the card's content
+    // done in rust, NOT js
+}
+
+export type NoteCardResponse = {
+    id: number;
+    preview: NotePreview;
+    title: string;
+    modified: number;
+    created: number;
+    archived: number;
+}
+
+export type QueryResponse = {
+    note: NoteResponse,
+    noteCard: NoteCardResponse,
+}
+
+// Note Provider interface
 export type NoteProviderValues = {
-    notes: NoteResponse[];
-    createNote: (note: NoteRequest) => Promise<NoteResponse>;
-    readNotes: () => Promise<NoteResponse[]>;
-    readNote: (note: NoteRequest) => Promise<NoteResponse>;
-    updateNote: (note: NoteRequest) => Promise<NoteResponse>;
-    deleteNote: (note: NoteRequest) => Promise<NoteResponse>;
+    notes: NoteCardResponse[];
+    createNote: (note: NoteInsertRequest) => Promise<QueryResponse>;
+    readNoteCards: () => Promise<NoteCardResponse[]>;
+    readNote: (note: NoteReadRequest) => Promise<QueryResponse>;
+    updateNote: (note: NoteUpdateRequest) => Promise<QueryResponse>;
+    deleteNote: (note: NoteDeleteRequest) => Promise<QueryResponse>;
+    archiveNote: (note: NoteArchiveRequest) => Promise<QueryResponse>;
 }

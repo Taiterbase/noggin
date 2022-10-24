@@ -1,24 +1,21 @@
-import { invoke } from '@tauri-apps/api/tauri';
 import { useRouter } from 'next/router'
 import { useNote } from 'providers/notes-provider';
 import { useEffect, useState } from 'react';
-import HeaderNote from './note';
-import Image from "next/image";
-import CreateNoteIcon from 'components/icons/create-note';
-import { NoteRequest, NoteResponse } from 'models/note';
+import { NoteCardResponse } from 'models/note';
 import NoteSearchBar from './search-bar';
+import NoteCard from './note-card';
 
 export default function HomeHeader(props: { title?: string }) {
     const useNotes = useNote();
     const { title } = props;
     const router = useRouter();
-    const [notes, setNotes] = useState<NoteResponse[]>([])
+    const [noteCards, setNoteCards] = useState<NoteCardResponse[]>([])
     const [selected, setSelected] = useState(-1);
 
     useEffect(() => {
         setInterval(() => {
-            useNotes.readNotes().then(res => {
-                setNotes(res);
+            useNotes.readNoteCards().then(res => {
+                setNoteCards(res);
             }).catch(e => {
                 console.error(e);
             });
@@ -26,9 +23,9 @@ export default function HomeHeader(props: { title?: string }) {
     }, [])
 
     useEffect(() => {
-        // readNotes with a filter parameter
-        useNotes.readNotes().then(res => {
-            setNotes(res);
+        // should add filter parameters to `readNoteCards`. Maybe `queryNoteCards`
+        useNotes.readNoteCards().then(res => {
+            setNoteCards(res);
         }).catch(e => {
             console.log("Couldn't refresh notes list.");
             console.error(e);
@@ -41,8 +38,8 @@ export default function HomeHeader(props: { title?: string }) {
             <NoteSearchBar />
             {/* notes list */}
             <div className="flex flex-col h-[calc(100vh-2.5rem)] overflow-y-auto">
-                {notes.map((note, i) => {
-                    return <HeaderNote key={note.id} note={note} selected={selected === note.id} setSelected={setSelected} />
+                {noteCards.map((noteCard, i) => {
+                    return <NoteCard key={noteCard.id} noteCard={noteCard} selected={selected === noteCard.id} setSelected={setSelected} />
                 })}
             </div>
         </div >

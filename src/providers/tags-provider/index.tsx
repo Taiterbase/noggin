@@ -9,11 +9,11 @@ export function TagsProvider(props: { children: ReactNode }) {
     const { children } = props;
 
     useEffect(() => {
-        invoke("get_tags").then(res => {
+        /* invoke("get_tags").then(res => {
             console.log("result: ", res);
         }).catch(e => {
             console.error(e);
-        })
+        }) */
     }, []);
 
     const createTag = (tag: Tag): Promise<boolean> => {

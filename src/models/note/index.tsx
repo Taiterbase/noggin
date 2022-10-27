@@ -8,7 +8,7 @@ export type NoteCardsRequest = {
 }
 
 export type NoteInsertRequest = {
-    content: string;
+    content: object;
 }
 
 export type NoteUpdateRequest = {
@@ -26,7 +26,7 @@ export type NoteDeleteRequest = {
 
 export type Note = {
     id: number;
-    content: string;
+    content: object;
 }
 
 export type NoteCard = {
@@ -46,10 +46,10 @@ export type NotePreview = {
 
 export type NoteResponse = {
     id: number;
-    content: string;
+    content: object;
     // word count, lines, time to read
     // other generated values from the card's content
-    // done in rust, NOT js
+    // done in rust and sent over to here
 }
 
 export type NoteCardResponse = {
@@ -62,8 +62,8 @@ export type NoteCardResponse = {
 }
 
 export type QueryResponse = {
-    note: NoteResponse,
-    noteCard: NoteCardResponse,
+    note: NoteResponse;
+    noteCard: NoteCardResponse;
 }
 
 // Note Provider interface

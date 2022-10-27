@@ -25,6 +25,14 @@ export function NotesProvider(props: { children: ReactNode }) {
                     note: r[1],
                 }
             }).then((r: QueryResponse) => {
+                if (typeof r.note?.content === "string") {
+                    try {
+                        r.note.content = JSON.parse(r.note.content);
+                    } catch (e) {
+                        console.error(e);
+                        r.note.content = {};
+                    }
+                }
                 setNotes(n => {
                     return [r.noteCard, ...n];
                 });
@@ -56,6 +64,14 @@ export function NotesProvider(props: { children: ReactNode }) {
                     note: r[1],
                 }
             }).then((r: QueryResponse) => {
+                if (typeof r.note?.content === "string") {
+                    try {
+                        r.note.content = JSON.parse(r.note.content);
+                    } catch (e) {
+                        console.error(e);
+                        r.note.content = {};
+                    }
+                }
                 res(r);
             }).catch(e => {
                 console.log("error in readNote");
@@ -76,6 +92,14 @@ export function NotesProvider(props: { children: ReactNode }) {
                 }
             }).then((r: QueryResponse) => {
                 if (r.noteCard.id <= 0) throw new Error(`Couldn't update note ${JSON.stringify(note)}`);
+                if (typeof r.note?.content === "string") {
+                    try {
+                        r.note.content = JSON.parse(r.note.content);
+                    } catch (e) {
+                        console.error(e);
+                        r.note.content = {};
+                    }
+                }
                 res(r);
                 setNotes(notes => {
                     return [r.noteCard, ...notes.filter((n) => n.id != r.noteCard.id)]

@@ -33,7 +33,7 @@ export default function HomeHeader(props: { title?: string }) {
     }, [useNotes.notes])
 
     return (
-        <div key="notes-header" className="bg-amber-50 select-none z-30 min-w-[14rem] w-[14rem] max-w-[30rem] min-h-full border-r-[1px]">
+        <div key="notes-header" className="bg-slate-50 select-none z-30 min-w-[14rem] w-[14rem] max-w-[30rem] min-h-full border-r-[1px]">
             {/* notes search bar */}
             <NoteSearchBar />
             {/* notes list */}

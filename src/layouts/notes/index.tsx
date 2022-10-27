@@ -12,7 +12,7 @@ export function NotesLayout(props: { children: ReactNode; }) {
         <>
             <NotesHeader />
             <div className="flex flex-grow flex-col overflow-x-auto">
-                <main className="bg-amber-50 h-screen flex flex-col justify-start">
+                <main className="bg-slate-50 h-screen flex flex-col justify-start">
                     {children}
                 </main>
             </div>

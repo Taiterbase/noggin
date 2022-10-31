@@ -6,44 +6,49 @@
 
 @layer base {
     h1::before {
-        content: "h1 ";
-        @apply text-xs text-slate-500;
+        content: "h1";
+        @apply text-xs text-slate-500 -ml-[15px] -left-3 relative;
     }
 
     h2::before {
-        content: "h2 ";
-        @apply text-xs text-slate-500;
+        content: "h2";
+        @apply text-xs text-slate-500 -ml-[15px] -left-3 relative;
     }
 
     h3::before {
-        content: "h3 ";
-        @apply text-xs text-slate-500;
+        content: "h3";
+        @apply text-xs text-slate-500 -ml-[15px] -left-3 relative;
     }
 
     h4::before {
-        content: "h4 ";
-        @apply text-xs text-slate-500;
+        content: "h4";
+        @apply text-xs text-slate-500 -ml-[15px] -left-3 relative;
     }
 
     h5::before {
-        content: "h5 ";
-        @apply text-xs text-slate-500;
+        content: "h5";
+        @apply text-xs text-slate-500 -ml-[15px] -left-3 relative;
 
     }
 
     h6::before {
-        content: "h6 ";
-        @apply text-xs text-slate-500;
+        content: "h6";
+        @apply text-xs text-slate-500 -ml-[15px] -left-3 relative;
     }
 
-    a::before {
-        content: "link ";
+
+    a {
         @apply text-sm cursor-pointer;
     }
 
-    p::before {
-        /* content: ""; 
-        @apply text-sm cursor-pointer; */
+    a::before {
+        content: "[";
+        @apply text-sm cursor-pointer;
+    }
+
+    a::after {
+        content: "]";
+        @apply text-sm cursor-pointer;
     }
 
     blockquote::before {

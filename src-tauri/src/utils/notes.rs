@@ -1,3 +1,5 @@
+use std::ptr::null;
+
 use crate::models::note_query::NotePreview;
 use serde_json::{from_str, Value};
 use unicode_segmentation::UnicodeSegmentation;
@@ -12,22 +14,26 @@ pub fn generate_preview(content: String) -> NotePreview {
             if c["type"] == "doc" {
                 if c["content"].is_array() {
                     for e in c["content"].as_array() {
+                        let mut i = 0;
                         for element in e {
                             if element["content"].is_array() {
                                 for ele in element["content"].as_array() {
-                                    if ele.len() >= 1 {
-                                        if title.eq("") {
-                                            title = ele[0]["text"].to_string();
-                                        } else if content.eq("") {
-                                            content = ele[0]["text"].to_string();
+                                    if i == 0 {
+                                        if ele.len() >= 1 {
+                                            title.push_str(&ele[0]["text"].to_string());
+                                        }
+                                    } else if i <= 3 {
+                                        let str = ele[0]["text"].as_str().unwrap_or_default();
+                                        if str.len() > 0 {
+                                            content.push_str(
+                                                (str.to_owned() + &" ".to_owned()).as_str(),
+                                            );
                                         }
                                     }
                                 }
-                            } else if element["type"] == "paragraph" {
-                                if title.eq("") {
-                                    title = String::from(" ");
-                                }
+                            } else if element["type"] == "paragraph" && i == 0 {
                             }
+                            i += 1;
                         }
                     }
                 }
@@ -38,15 +44,15 @@ pub fn generate_preview(content: String) -> NotePreview {
         }
     }
     if title.len() > 2 {
-        title = match substr(title.as_str(), 1, Some((title.len() - 2).min(27))) {
+        title = match substr(title.as_str(), 1, Some((title.len() - 2).min(54))) {
             Ok(str) => str,
             Err(str) => str,
         }
         .to_string();
     }
 
-    if content.len() > 2 {
-        content = match substr(content.as_str(), 1, Some((content.len() - 2).min(27))) {
+    if content.len() > 0 {
+        content = match substr(content.as_str(), 0, Some((content.len()).min(54))) {
             Ok(str) => str,
             Err(str) => str,
         }

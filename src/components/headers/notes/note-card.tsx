@@ -9,26 +9,22 @@ export default function NoteCard({ noteCard, selected, setSelected }) {
     const content = noteCard.preview.content;
     let noteStyle = "";
     if (selected) {
-        noteStyle = "border-l-amber-400 bg-amber-100"
+        noteStyle = "border-l-red-500 bg-slate-200"
     }
 
     return <div onClick={e => {
         setSelected(id);
         router.push({ pathname: "/[id]", query: { id: id } })
-    }} className={`h-16 pointer-events-auto w-full flex flex-row border-l-4 ${noteStyle} hover:border-l-amber-400`}>
-        <div className="w-12 h-full p-1">
-            <p className="text-sm">{`${diff.diff}${diff.unit}`}</p>
+    }} className={`py-2 max-h-24 max-w-56 flex flex-row justify-start border-l-4 border-b-[1px] whitespace-nowrap ${noteStyle} hover:border-l-red-500`}>
+        <div className="pt-1 w-10">
+            <p className=" px-2 text-sm">{`${diff.diff}${diff.unit}`}</p>
         </div>
-        <div className="flex flex-col w-full h-full border-b-[1px] border-b-slate-100">
-            <div className=""
-            // title
-            >
-                <h3 className="before:content-['']">{title}</h3>
+        <div className="w-[10rem] h-full">
+            <div className="h-8 w-full">
+                <h2 className="text-lg overflow-hidden text-ellipsis font-normal before:content-none">{title}</h2>
             </div>
-            <div className=""
-            // content
-            >
-                <p>{content}</p>
+            <div className="h-8 min-w-[10rem] text-ellipsis">
+                <p className="text-sm overflow-hidden text-ellipsis font-light">{content}</p>
             </div>
         </div>
     </div>

@@ -25,14 +25,6 @@ export function NotesProvider(props: { children: ReactNode }) {
                     note: r[1],
                 }
             }).then((r: QueryResponse) => {
-                if (typeof r.note?.content === "string") {
-                    try {
-                        r.note.content = JSON.parse(r.note.content);
-                    } catch (e) {
-                        console.error(e);
-                        r.note.content = {};
-                    }
-                }
                 setNotes(n => {
                     return [r.noteCard, ...n];
                 });

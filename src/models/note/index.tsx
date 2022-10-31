@@ -8,7 +8,7 @@ export type NoteCardsRequest = {
 }
 
 export type NoteInsertRequest = {
-    content: object;
+    content: string;
 }
 
 export type NoteUpdateRequest = {

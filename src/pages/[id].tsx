@@ -47,9 +47,7 @@ function HomePage(props: any) {
 
     return (
         <div className="mx-auto mb-5 w-full h-full flex flex-col overflow-auto">
-            {note.id <= 0 ? null :
-                <Notebox id={note.id} content={note.content} processUpdate={processUpdate} />
-            }
+            <Notebox id={note.id} content={note.content} processUpdate={processUpdate} />
             <div className="fixed bottom-0 h-5 w-full flex flex-row flex-grow-0 bg-slate-200">
                 <div className="h-full flex flex-row justify-center flex-grow-0">
                     <p className="text-sm"> Bottom toolbar</p>

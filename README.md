@@ -8,19 +8,14 @@ Noggin was built using Rust and TypeScript. It uses a SQLite database for local 
 ## To Run
 Install [Yarn](https://yarnpkg.com/getting-started/install)
 ```
-1. git clone https://github.com/Taiterbase/nextjs-web-template.git
-2. cd nextjs-web-template
-3. yarn install
-4. yarn export
-5. yarn dev
+1. cd ./src
+2. yarn install
+3. yarn dev
 ```
-
-Make sure to run `yarn export` to generate the static files Tauri will read from.
-In another terminal, run:
-
+In another terminal
 ```
-1. cargo build
-2. cargo run
+1. cd ./src-tauri
+2. yarn tauri dev
 ```
 
 Enjoy your new native Markdown editor!

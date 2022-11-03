@@ -12,10 +12,12 @@ export default function NoteCard({ noteCard, selected, setSelected }) {
         noteStyle = "border-l-red-500 bg-slate-200"
     }
 
-    return <div onClick={e => {
-        setSelected(id);
-        router.push({ pathname: "/[id]", query: { id: id } })
-    }} className={`py-2 max-h-24 max-w-56 flex flex-row justify-start border-l-4 border-b-[1px] whitespace-nowrap ${noteStyle} hover:border-l-red-500`}>
+    return <div
+        onClick={e => {
+            setSelected(id);
+            router.push({ pathname: "/[id]", query: { id: id } })
+        }}
+        className={`py-2 max-h-24 max-w-56 flex flex-row justify-start border-l-4 border-b-[1px] whitespace-nowrap ${noteStyle} hover:border-l-red-500`}>
         <div className="pt-1 w-10">
             <p className=" px-2 text-sm">{`${diff.diff}${diff.unit}`}</p>
         </div>

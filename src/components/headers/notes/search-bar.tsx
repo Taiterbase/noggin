@@ -16,9 +16,9 @@ export default function NoteSearchBar() {
         e.preventDefault();
         console.log(e);
 
-        let content = {};
+        let content = "{\"type\":\"doc\",\"content\":[{\"type\":\"heading\",\"attrs\":{\"level\":1}}]}";
 
-        let newNote: NoteInsertRequest = { content: JSON.stringify(content) }
+        let newNote: NoteInsertRequest = { content }
         useNotes.createNote(newNote).then((res: QueryResponse) => {
             if (res.noteCard.id >= 0) {
                 router.push({ pathname: "/[id]", query: { id: res.noteCard.id, note: JSON.stringify(res) } });

@@ -7,35 +7,34 @@
 @layer base {
     h1::before {
         content: "h1";
-        @apply text-xs text-slate-500 -ml-[15px] -left-3 relative;
+        @apply text-xs text-slate-500 -ml-[14px] -left-3 relative;
     }
 
     h2::before {
         content: "h2";
-        @apply text-xs text-slate-500 -ml-[15px] -left-3 relative;
+        @apply text-xs text-slate-500 -ml-[14px] -left-3 relative;
     }
 
     h3::before {
         content: "h3";
-        @apply text-xs text-slate-500 -ml-[15px] -left-3 relative;
+        @apply text-xs text-slate-500 -ml-[14px] -left-3 relative;
     }
 
     h4::before {
         content: "h4";
-        @apply text-xs text-slate-500 -ml-[15px] -left-3 relative;
+        @apply text-xs text-slate-500 -ml-[14px] -left-3 relative;
     }
 
     h5::before {
         content: "h5";
-        @apply text-xs text-slate-500 -ml-[15px] -left-3 relative;
+        @apply text-xs text-slate-500 -ml-[14px] -left-3 relative;
 
     }
 
     h6::before {
         content: "h6";
-        @apply text-xs text-slate-500 -ml-[15px] -left-3 relative;
+        @apply text-xs text-slate-500 -ml-[14px] -left-3 relative;
     }
-
 
     a {
         @apply text-sm cursor-pointer;
@@ -71,12 +70,9 @@
         @apply text-xs;
     } */
 
-    pre {
-        @apply bg-black bg-opacity-25 p-[.75px] rounded-sm my-1;
-    }
-
-    pre code {
-        @apply bg-opacity-0;
+    pre::before {
+        content: "</>";
+        @apply text-xs text-slate-500 -ml-[20px] -left-3 relative text-opacity-100 z-10;
     }
 
     pre code::before {

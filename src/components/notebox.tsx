@@ -4,9 +4,7 @@ import Document from '@tiptap/extension-document';
 import Heading from '@tiptap/extension-heading';
 import Paragraph from '@tiptap/extension-paragraph';
 import Text from '@tiptap/extension-text';
-
 import History from "@tiptap/extension-history";
-
 import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight';
 import Code from '@tiptap/extension-code';
 import Color from '@tiptap/extension-color';
@@ -99,21 +97,23 @@ const NoteBox = (props: any) => {
             },
         },
         autofocus: true,
+        content: content,
     });
 
     useEffect(() => {
-
+        if (!editor) return;
+        editor.commands.setContent(content);
     }, [])
 
     useEffect(() => {
-        if (!editor) return
+        console.log("here!", id);
+        if (!editor) return;
         try {
             editor.off("update");
             editor.on("update", ({ editor }) => {
-                let noteContent = editor.getHTML();
-                console.log("note content", noteContent)
+                let noteContent = editor.getJSON();
                 processUpdate(id, noteContent);
-            })
+            });
             let noteContent = content;
             editor.commands.clearContent();
             editor.commands.setContent(noteContent);
@@ -123,7 +123,7 @@ const NoteBox = (props: any) => {
     }, [id])
 
     return (
-        <EditorContent tabIndex={-1} className="" editor={editor} />
+        <EditorContent tabIndex={-1} className="pl-4" editor={editor} />
     )
 }
 

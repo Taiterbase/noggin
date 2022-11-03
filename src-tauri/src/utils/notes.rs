@@ -1,5 +1,3 @@
-use std::ptr::null;
-
 use crate::models::note_query::NotePreview;
 use serde_json::{from_str, Value};
 use unicode_segmentation::UnicodeSegmentation;

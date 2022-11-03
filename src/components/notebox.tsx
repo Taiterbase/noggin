@@ -93,7 +93,7 @@ const NoteBox = (props: any) => {
                 }
             },
             attributes: {
-                class: 'prose min-h-[calc(100vh-4.75rem)] min-w-[300px] mx-auto pb-[90vh] p-6 text-sm focus:outline-none',
+                class: 'prose min-h-[calc(100vh-4.75rem)] min-w-[300px] mx-auto pb-[90vh] p-6 pt-10 text-sm focus:outline-none',
             },
         },
         autofocus: true,

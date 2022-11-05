@@ -14,7 +14,6 @@ import Placeholder from '@tiptap/extension-placeholder';
 import Strike from '@tiptap/extension-strike';
 import HardBreak from '@tiptap/extension-hard-break';
 import Typography from '@tiptap/extension-typography';
-import Emoji, { emojis, gitHubEmojis, gitHubCustomEmojis } from '@tiptap-pro/extension-emoji'
 import Link from '@tiptap/extension-link';
 import OrderedList from '@tiptap/extension-ordered-list';
 import BulletList from '@tiptap/extension-bullet-list';
@@ -74,14 +73,6 @@ const NoteBox = (props: any) => {
             OrderedList,
             BulletList,
             ListItem,
-            Emoji.configure({
-                emojis: [
-                    ...emojis,
-                    ...gitHubEmojis,
-                    ...gitHubCustomEmojis
-                ],
-                enableEmoticons: true,
-            }),
             Youtube,
         ],
         editorProps: {

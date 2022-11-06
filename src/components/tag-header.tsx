@@ -2,7 +2,7 @@ import { invoke } from '@tauri-apps/api/tauri';
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react';
 import { useTag } from "providers/tags-provider";
-import HeaderTag from './tag';
+import HeaderTag from 'components/tag';
 import { Tag } from 'models/tag';
 
 export default function TagsHeader(props: { title?: string }) {

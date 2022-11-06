@@ -76,28 +76,23 @@ const NoteBox = (props: any) => {
             Youtube,
         ],
         editorProps: {
-            handleDOMEvents: {
-                keypress: (view, event) => {
-                    if (event.key === "Enter") {
-                        console.log("enter pressed");
-                    }
-                }
-            },
             attributes: {
                 class: 'prose min-h-[calc(100vh-4.75rem)] min-w-[300px] mx-auto pb-[90vh] p-6 pt-10 text-sm focus:outline-none',
             },
         },
         autofocus: true,
-        content: content,
+        content: content
     });
 
     useEffect(() => {
-        if (!editor) return;
-        editor.commands.setContent(content);
-    }, [])
+        if (editor) editor.commands.setContent(content);
+        window.addEventListener('scroll', (e) => {
+            console.log(document.documentElement.scrollTop);
+        });
+        console.log("wtf is going on");
+    }, []);
 
     useEffect(() => {
-        console.log("here!", id);
         if (!editor) return;
         try {
             editor.off("update");
@@ -111,10 +106,10 @@ const NoteBox = (props: any) => {
         } catch (e) {
             console.error("Could not parse note JSON", e);
         }
-    }, [id])
+    }, [id]);
 
     return (
-        <EditorContent tabIndex={-1} className="pl-4" editor={editor} />
+        <EditorContent className="pl-5 " editor={editor} />
     )
 }
 

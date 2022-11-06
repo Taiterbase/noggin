@@ -1,11 +1,22 @@
-import NotesHeader from "components/headers/notes";
+import NotesHeader from "components/note-header";
+import NoteToolbar from "components/note-toolbar";
+
 import { getLayout as TagsLayout } from "layouts/tags";
-import { ReactNode, useEffect } from "react";
+import { NoteCardResponse } from "models/note";
+import { useRouter } from "next/router";
+import { useNote } from "providers/notes-provider";
+import { ReactNode, useEffect, useState } from "react";
 export function NotesLayout(props: { children: ReactNode; }) {
     const { children } = props;
+    const router = useRouter();
+    const note = useNote();
+    const [noteCard, setNoteCard] = useState<NoteCardResponse>(null);
 
     useEffect(() => {
-        console.log("Notes Layout")
+        let id = parseInt(router.query.id as string);
+        note.getNoteCard({ id }).then((notecard) => {
+            setNoteCard(notecard);
+        });
     }, [])
 
     return (
@@ -16,6 +27,7 @@ export function NotesLayout(props: { children: ReactNode; }) {
                     {children}
                 </main>
             </div>
+            <NoteToolbar noteCard={noteCard} />
         </>
     )
 }

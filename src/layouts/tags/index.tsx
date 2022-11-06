@@ -1,4 +1,4 @@
-import TagsHeader from "components/headers/tags";
+import TagsHeader from "components/tag-header";
 import { getLayout as getRootLayout } from "layouts/root";
 import { ReactNode, useEffect, useState } from "react";
 export function TagsLayout(props: { children: ReactNode; }) {

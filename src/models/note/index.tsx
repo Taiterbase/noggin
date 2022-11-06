@@ -71,6 +71,7 @@ export type NoteProviderValues = {
     notes: NoteCardResponse[];
     createNote: (note: NoteInsertRequest) => Promise<QueryResponse>;
     readNoteCards: () => Promise<NoteCardResponse[]>;
+    getNoteCard: (note: NoteReadRequest) => Promise<NoteCardResponse>;
     readNote: (note: NoteReadRequest) => Promise<QueryResponse>;
     updateNote: (note: NoteUpdateRequest) => Promise<QueryResponse>;
     deleteNote: (note: NoteDeleteRequest) => Promise<QueryResponse>;

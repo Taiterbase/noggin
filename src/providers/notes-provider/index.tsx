@@ -37,14 +37,21 @@ export function NotesProvider(props: { children: ReactNode }) {
     }
 
     const readNoteCards = (): Promise<NoteCardResponse[]> => {
-        return new Promise((res, err) => {
-            invoke("read_note_list", null).then((r: NoteCardResponse[]) => {
-                res(r);
+        return new Promise(async (res, err) => {
+            return invoke("read_note_list", null).then((r: NoteCardResponse[]) => {
+                setNotes(r);
+                return res(r);
             }).catch(e => {
                 console.log("error in readNoteCards");
                 console.error(e);
-                err(e);
+                return err(e);
             })
+        });
+    }
+
+    const getNoteCard = (note: NoteReadRequest): Promise<NoteCardResponse> => {
+        return new Promise((res, err) => {
+            return res(notes ? notes.find(n => n.id === note.id) : null);
         });
     }
 
@@ -121,6 +128,7 @@ export function NotesProvider(props: { children: ReactNode }) {
         createNote,
         readNote,
         readNoteCards,
+        getNoteCard,
         updateNote,
         deleteNote,
         archiveNote,

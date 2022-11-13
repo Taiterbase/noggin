@@ -1,21 +1,32 @@
 # Noggin
 
-Noggin is a cross-platform native application that helps you organize your notes and sync them across your devices.
+Noggin is a place to put your thoughts. It's frustrating to use right now and needs lots of love.
+
+## Write
+Noggin stores your notes in a local SQLite db and gives you CRUD functionality.
 
 ## Develop
-Noggin was built using Rust and TypeScript. It uses a SQLite database for local storage and syncs your updates with a database in the sky ☁️ so you can pick up where you left off whenever, wherever.
-
-## To Run
-Install [Yarn](https://yarnpkg.com/getting-started/install)
+Install [Yarn](https://yarnpkg.com/getting-started/install) and Rust
 ```
 1. cd ./src
 2. yarn install
-3. yarn dev
+3. yarn export
+4. yarn dev
 ```
-In another terminal
+In another terminal 
 ```
 1. cd ./src-tauri
 2. yarn tauri dev
 ```
 
-Enjoy your new native Markdown editor!
+## I just want to try it out
+Download one of the releases!
+
+## What's next?
+We're working on:
+- Hotkeys and Shortcuts
+- Search and Replace
+- Tagging
+- iCloud Sync
+
+Enjoy your new native Markdown editor in Rust!

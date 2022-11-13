@@ -1,5 +1,5 @@
 import NotesHeader from "components/note-header";
-import NoteToolbar from "components/note-toolbar";
+import NoteInfobar from "components/note-infobar";
 
 import { getLayout as TagsLayout } from "layouts/tags";
 import { NoteCardResponse } from "models/note";
@@ -17,17 +17,17 @@ export function NotesLayout(props: { children: ReactNode; }) {
         note.getNoteCard({ id }).then((notecard) => {
             setNoteCard(notecard);
         });
-    }, [])
+    }, []);
 
     return (
         <>
             <NotesHeader />
-            <div className="flex flex-grow flex-col overflow-x-auto">
+            <div className="flex flex-grow flex-col">
                 <main className="bg-slate-50 h-screen flex flex-col justify-start">
                     {children}
                 </main>
             </div>
-            <NoteToolbar noteCard={noteCard} />
+            <NoteInfobar noteCard={noteCard} />
         </>
     )
 }

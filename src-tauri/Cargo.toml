@@ -1,11 +1,11 @@
 [package]
-name = "app"
+name = "noggin"
 version = "0.1.0"
-description = "A Tauri App"
-authors = ["you"]
+description = "A beautiful markdown note-taking app built with Tauri and Next.js"
+authors = ["T8"]
 license = ""
 repository = ""
-default-run = "app"
+default-run = "noggin"
 edition = "2021"
 rust-version = "1.57"
 

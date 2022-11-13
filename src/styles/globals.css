@@ -2,9 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
-/* global CSS styles can go here */
-
 @layer base {
+
     h1::before {
         content: "h1";
         @apply text-xs text-slate-500 -ml-[14px] -left-3 relative;

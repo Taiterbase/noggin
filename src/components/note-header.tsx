@@ -45,12 +45,12 @@ export default function HomeHeader(props: { title?: string }) {
             <div
                 key="notes-header"
                 style={{ width: `${width}px` }}
-                className={`bg-slate-50 select-none z-20 max-w-[30rem] min-h-full border-r-[1px] border-r-slate-200`}
+                className={`bg-slate-50 select-none z-20 max-w-[16rem] min-h-full border-r-[1px] border-r-slate-200`}
             >
                 {/* notes search bar */}
-                <NoteSearchBar />
+                <NoteSearchBar setSelected={setSelected} />
                 {/* notes list */}
-                <div className="flex flex-col h-[calc(100vh-2.5rem)] overflow-y-auto">
+                <div className="flex flex-col h-[calc(100vh-3.75rem)] overflow-x-hidden text-ellipsis">
                     {noteCards.map((noteCard, i) => {
                         return <NoteCard key={noteCard.id} noteCard={noteCard} selected={selected === noteCard.id} setSelected={setSelected} />
                     })}
@@ -61,7 +61,7 @@ export default function HomeHeader(props: { title?: string }) {
                 onMouseUp={() => setNotebarResize(false)}
                 onMouseMove={(e) => resizeNotebar(e)}
                 style={{ left: `${width - 2}px` }}
-                className={`absolute min-h-full w-1 bg-slate-50 opacity-0 cursor-col-resize`}
+                className={`absolute min-h-full max-w-[16rem] w-1 bg-slate-50 opacity-0 cursor-col-resize`}
 
             />
         </div>

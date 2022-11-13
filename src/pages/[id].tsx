@@ -47,23 +47,11 @@ function HomePage(props: any) {
     };
 
     return (
-        <div className="mx-auto mb-5 w-full h-full flex flex-col overflow-y-auto overflow-x-scroll">
+        <div className="mb-5 w-full h-full flex flex-row justify-center overflow-y-auto overflow-x-scroll">
             <Notebox id={note.id} content={note.content} processUpdate={processUpdate} />
         </div>
     );
 }
-
-export async function getStaticProps({ params }) {
-    console.log("pls help me", params);
-    return {
-        props: { id: params.id, key: params.id }
-    };
-}
-
-export async function getStaticPaths(ctx) {
-    return { paths: [], fallback: "blocking" }
-}
-
 
 HomePage.getLayout = NotesLayout;
 export default HomePage;

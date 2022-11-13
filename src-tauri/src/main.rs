@@ -20,6 +20,7 @@ fn main() {
             read_note,
             read_note_list,
             update_note,
+            archive_note,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

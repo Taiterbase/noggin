@@ -26,3 +26,9 @@ pub struct NotePreview {
     pub title: String,
     pub content: String,
 }
+
+#[derive(Debug, Serialize, Deserialize, Default)]
+pub struct NoteArchiveResponse {
+    pub id: i64,
+    pub archived: i64,
+}

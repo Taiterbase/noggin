@@ -159,7 +159,7 @@ async fn send_note_read_all_request() -> Result<Vec<NoteCardResponse>> {
     let conn = Connection::open(dbconstr)?;
     let mut notes: Vec<NoteCardResponse> = Vec::new();
     let mut stmt = conn.prepare(
-        "SELECT id, content, modified, created, archived FROM notes WHERE deleted <> 1 ORDER BY modified DESC;",
+        "SELECT id, content, modified, created, archived FROM notes WHERE archived <> 1 AND deleted <> 1 ORDER BY modified DESC;",
     )?;
     let res = stmt.query_map([], |row| {
         let content: String = match row.get(1) {
@@ -234,6 +234,50 @@ async fn send_note_read_request(note: NoteQuery) -> Result<(NoteCardResponse, No
                 content: row.get(1)?,
             },
         ))
+    });
+    return noteres;
+}
+
+#[tauri::command]
+pub async fn archive_note(note: NoteArchiveRequest) -> NoteArchiveResponse {
+    println!("Received archive request!");
+    match send_note_archive_request(note).await {
+        Ok(n) => {
+            return n;
+        }
+        Err(e) => {
+            println!("Error! {:?}", e);
+            return NoteArchiveResponse {
+                id: -1,
+                archived: 0,
+            };
+        }
+    }
+}
+
+async fn send_note_archive_request(note: NoteArchiveRequest) -> Result<NoteArchiveResponse> {
+    let dbconstr = get_db_path();
+    let conn = Connection::open(dbconstr)?;
+    let mut stmt = conn.prepare(
+        "
+            UPDATE notes 
+            SET archived=1, modified=strftime('%s', 'now') 
+            WHERE id = (?1);
+        ",
+    )?;
+    let _updateres = stmt.execute([note.id.to_string()]);
+    stmt = conn.prepare(
+        "
+            SELECT id, archived
+            FROM notes 
+            WHERE id = (?1);
+        ",
+    )?;
+    let noteres = stmt.query_row([note.id], |row| {
+        Ok(NoteArchiveResponse {
+            id: row.get(0)?,
+            archived: row.get(1)?,
+        })
     });
     return noteres;
 }

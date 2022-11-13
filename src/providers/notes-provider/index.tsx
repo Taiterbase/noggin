@@ -1,5 +1,5 @@
 import { invoke } from "@tauri-apps/api/tauri";
-import { NoteProviderValues, NoteCardResponse, NoteInsertRequest, QueryResponse, NoteReadRequest, NoteUpdateRequest, NoteDeleteRequest, NoteArchiveRequest } from "models/note";
+import { NoteProviderValues, NoteCardResponse, NoteInsertRequest, QueryResponse, NoteReadRequest, NoteUpdateRequest, NoteDeleteRequest, NoteArchiveRequest, NoteArchiveResponse } from "models/note";
 import React, { createContext, ReactNode, useContext, useEffect, useState } from "react";
 
 export const NotesContext = createContext<NoteProviderValues>(null);
@@ -109,16 +109,25 @@ export function NotesProvider(props: { children: ReactNode }) {
         });
     }
 
-    const deleteNote = (note: NoteDeleteRequest): Promise<QueryResponse> => {
+    const archiveNote = (note: NoteArchiveRequest): Promise<NoteArchiveResponse> => {
         return new Promise((res, err) => {
-            res(null);
+            console.log("archiving note in provider", note);
+            invoke("archive_note", { note: note }).then((r: NoteArchiveResponse) => {
+                console.log(
+                    "archived note", r
+                )
+                if (r.id === -1) throw new Error("DB error, unable to archive note.");
+                setNotes(notes => {
+                    return notes.filter((n) => n.id !== r.id);
+                });
+            }).catch(error => {
+                err(error);
+            })
         });
     }
 
-    const archiveNote = (note: NoteArchiveRequest): Promise<QueryResponse> => {
-        return new Promise((res, err) => {
-            res(null);
-        });
+    const deleteNote = (note: NoteDeleteRequest): Promise<QueryResponse> => {
+        return new Promise((res, err) => { res(null) });
     }
 
 

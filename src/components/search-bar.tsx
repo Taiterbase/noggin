@@ -7,10 +7,9 @@ import StarterKit from "@tiptap/starter-kit";
 import Document from "@tiptap/extension-document";
 
 
-export default function NoteSearchBar() {
+export default function NoteSearchBar({ setSelected }) {
     const useNotes = useNote();
     const router = useRouter();
-
 
     const createNote = (e) => {
         e.preventDefault();
@@ -21,6 +20,7 @@ export default function NoteSearchBar() {
         let newNote: NoteInsertRequest = { content }
         useNotes.createNote(newNote).then((res: QueryResponse) => {
             if (res.noteCard.id >= 0) {
+                setSelected(res.noteCard.id);
                 router.push({ pathname: "/[id]", query: { id: res.noteCard.id, note: JSON.stringify(res) } });
             } else {
                 throw new Error;

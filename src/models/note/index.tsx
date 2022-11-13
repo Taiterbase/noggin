@@ -61,6 +61,11 @@ export type NoteCardResponse = {
     archived: number;
 }
 
+export type NoteArchiveResponse = {
+    id: number;
+    archived: number;
+}
+
 export type QueryResponse = {
     note: NoteResponse;
     noteCard: NoteCardResponse;
@@ -75,5 +80,5 @@ export type NoteProviderValues = {
     readNote: (note: NoteReadRequest) => Promise<QueryResponse>;
     updateNote: (note: NoteUpdateRequest) => Promise<QueryResponse>;
     deleteNote: (note: NoteDeleteRequest) => Promise<QueryResponse>;
-    archiveNote: (note: NoteArchiveRequest) => Promise<QueryResponse>;
+    archiveNote: (note: NoteArchiveRequest) => Promise<NoteArchiveResponse>;
 }

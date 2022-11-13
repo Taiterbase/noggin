@@ -1,6 +1,4 @@
-import { invoke } from "@tauri-apps/api/tauri";
 import { getLayout as NotesLayout } from "layouts/notes"; // effectively getLayout from layouts/home
-import { useEffect } from "react";
 
 function HomePage(props: any) {
     return (

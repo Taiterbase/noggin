@@ -1,4 +1,5 @@
 import { useEditor, EditorContent } from '@tiptap/react'
+import { EditorState, TextSelection } from 'prosemirror-state';
 import { useEffect } from 'react';
 import Document from '@tiptap/extension-document';
 import Heading from '@tiptap/extension-heading';
@@ -7,14 +8,10 @@ import Text from '@tiptap/extension-text';
 import History from "@tiptap/extension-history";
 import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight';
 import Code from '@tiptap/extension-code';
-import Color from '@tiptap/extension-color';
-import Gapcursor from '@tiptap/extension-gapcursor';
 import ListItem from '@tiptap/extension-list-item';
-import Placeholder from '@tiptap/extension-placeholder';
 import Strike from '@tiptap/extension-strike';
 import HardBreak from '@tiptap/extension-hard-break';
 import Typography from '@tiptap/extension-typography';
-import Link from '@tiptap/extension-link';
 import OrderedList from '@tiptap/extension-ordered-list';
 import BulletList from '@tiptap/extension-bullet-list';
 import BlockQuote from "@tiptap/extension-blockquote";
@@ -32,84 +29,82 @@ import TaskItem from '@tiptap/extension-task-item'
 
 const NoteBox = (props: any) => {
     const { id, content, processUpdate } = props;
+    let hist = History.configure({
+        depth: 100,
+    });
+    const extensions = [
+        Document,
+        Heading.configure({
+            levels: [1, 2, 3, 4, 5]
+        }),
+        Paragraph,
+        Text,
+        BlockQuote,
+        Bold,
+        Italic,
+        Subscript,
+        Superscript,
+        Underline,
+        TaskList,
+        TaskItem.configure({
+            nested: true,
+        }),
+        hist,
+        Typography,
+        Strike,
+        Code,
+        CodeBlockLowlight.configure({
+            lowlight,
+            exitOnArrowDown: true,
+            defaultLanguage: "javascript",
+            exitOnTripleEnter: true,
+            languageClassPrefix: "language-"
+        }),
+        HardBreak,
+        OrderedList,
+        BulletList,
+        ListItem,
+        Youtube,
+    ];
+
     const editor = useEditor({
-        extensions: [
-            Document,
-            Heading,
-            Paragraph,
-            Text,
-            BlockQuote,
-            Bold,
-            Italic,
-            Subscript,
-            Superscript,
-            Underline,
-            TaskList,
-            TaskItem.configure({
-                nested: true,
-            }),
-            History.configure({
-                depth: 100,
-            }),
-            Typography,
-            Highlight.configure({
-                multicolor: true
-            }),
-            Strike,
-            Placeholder,
-            Gapcursor,
-            Color,
-            Code,
-            CodeBlockLowlight.configure({
-                lowlight
-            }),
-            HardBreak,
-            Link.configure({
-                protocols: ["ftp", "mailto"],
-                autolink: true,
-                openOnClick: true,
-                linkOnPaste: true,
-            }),
-            OrderedList,
-            BulletList,
-            ListItem,
-            Youtube,
-        ],
+        extensions: extensions,
         editorProps: {
             attributes: {
-                class: 'prose min-h-[calc(100vh-4.75rem)] min-w-[300px] mx-auto pb-[90vh] p-6 pt-10 text-sm focus:outline-none',
+                class: 'prose mx-auto p-7 pt-0 px-12 pb-[40vh] mt-10 min-h-[calc(100vh-4.75rem)] min-w-[300px] text-sm focus:outline-none',
             },
         },
         autofocus: true,
-        content: content
+        content: content,
+        injectCSS: false,
     });
 
-    useEffect(() => {
-        if (editor) editor.commands.setContent(content);
-        window.addEventListener('scroll', (e) => {
-            console.log(document.documentElement.scrollTop);
-        });
-        console.log("wtf is going on");
-    }, []);
 
     useEffect(() => {
         if (!editor) return;
         try {
+            const doc = editor.schema.nodeFromJSON({
+                type: "doc",
+                content: content.content,
+            });
+            const state = EditorState.create({
+                doc: doc,
+                plugins: editor.extensionManager.plugins,
+            });
+            editor.commands.setContent(content);
+            editor.view.updateState(state);
             editor.off("update");
             editor.on("update", ({ editor }) => {
-                let noteContent = editor.getJSON();
-                processUpdate(id, noteContent);
+                processUpdate(id, editor.getJSON());
             });
-            let noteContent = content;
-            editor.commands.clearContent();
-            editor.commands.setContent(noteContent);
+            editor.view.focus();
         } catch (e) {
             console.error("Could not parse note JSON", e);
         }
     }, [id]);
 
     return (
-        <EditorContent className="pl-5 " editor={editor} />
+        <EditorContent id={id} className="w-full h-full overflow-y-auto" editor={editor} />
     )
 }
 

@@ -59,27 +59,4 @@
         @apply text-sm cursor-pointer;
     }
 
-    /*  code::before {
-        content: "`";
-        @apply text-xs;
-    }
-
-    code::after {
-        content: "`";
-        @apply text-xs;
-    } */
-
-    pre::before {
-        content: "</>";
-        @apply text-xs text-slate-500 -ml-[20px] -left-3 relative text-opacity-100 z-10;
-    }
-
-    pre code::before {
-        content: "";
-    }
-
-    pre code::after {
-        content: "";
-    }
-
 }

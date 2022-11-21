@@ -83,3 +83,16 @@
     }
 
 }
+
+.fade-in {
+    animation: fadeIn 4s forwards;
+    -webkit-animation: fadeIn 3s forwards;
+    -moz-animation: fadeIn 3s forwards;
+    -o-animation: fadeIn 3s forwards;
+    -ms-animation: fadeIn 3s forwards;
+}
+  
+@keyframes fadeIn {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+}

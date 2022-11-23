@@ -85,14 +85,32 @@
 }
 
 .fade-in {
-    animation: fadeIn 4s forwards;
-    -webkit-animation: fadeIn 3s forwards;
-    -moz-animation: fadeIn 3s forwards;
-    -o-animation: fadeIn 3s forwards;
-    -ms-animation: fadeIn 3s forwards;
+    animation: fadeIn 5s forwards;
+    -webkit-animation: fadeIn 5s forwards;
+    -moz-animation: fadeIn 5s forwards;
+    -o-animation: fadeIn 5s forwards;
+    -ms-animation: fadeIn 5s forwards;
 }
   
 @keyframes fadeIn {
     0% { opacity: 0; }
     100% { opacity: 1; }
+}
+
+main {
+    background: linear-gradient(90deg, #24052b, #000000, #eae2eb, #24052b);
+    background-size: 400% 400%;
+    animation: gradient 15s ease infinite;
+}
+
+@keyframes gradient {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
 }

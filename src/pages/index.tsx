@@ -12,7 +12,7 @@ function HomePage(props: any) {
                 <meta name="og:title" content="Noggin" key="title" />
             </Head>
 
-            <main className="h-screen overflow-auto bg-gradient-to-r from-slate-900 via-purple-900 to-slate-900">
+            <main className="h-screen overflow-auto ">
 
                 <div className='fixed px-10 pt-5 flex justify-between h-20 w-full bg-transparent backdrop-blur-sm'>
                     <a href='#' className='leading-5 text-center before:content-none after:content-none'>
@@ -24,7 +24,7 @@ function HomePage(props: any) {
                 </div>
 
                 <div className="mt-20 flex flex-col">
-                    <p className="text-white text-7xl font-bold text-center fade-in">Your new favorite <br></br>Markdown, Note-taking, <br></br> open-source app</p>
+                    <p className="text-white text-6xl font-bold text-center fade-in">Your new favorite <br></br>Markdown, note-taking, <br></br> open-source app</p>
                     <div className="flex justify-center mt-10">
                         <Image
                             src={SS}
@@ -34,7 +34,7 @@ function HomePage(props: any) {
                         />
                     </div>
                     <div>
-                        <p className="text-center text-white text-2xl pt-4">Noggin is built with Rust, Typescript, NextJS, and TailwindCSS. Please take a look at our github repo and show some love!</p>
+                        <p className="text-center text-white text-2xl pt-6 fade-in">Noggin is built with Rust, Typescript, NextJS, and TailwindCSS.<br></br> Please take a look at our github repo and show some love!</p>
                     </div>
                 </div>
             </main>

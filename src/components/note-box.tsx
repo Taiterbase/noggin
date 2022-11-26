@@ -15,8 +15,6 @@ import Typography from '@tiptap/extension-typography';
 import OrderedList from '@tiptap/extension-ordered-list';
 import BulletList from '@tiptap/extension-bullet-list';
 import BlockQuote from "@tiptap/extension-blockquote";
-import Highlight from "@tiptap/extension-highlight";
-import Youtube from '@tiptap/extension-youtube';
 import { lowlight } from 'lowlight/lib/all.js'
 import Bold from '@tiptap/extension-bold';
 import Italic from '@tiptap/extension-italic';
@@ -25,13 +23,11 @@ import Superscript from '@tiptap/extension-superscript';
 import Underline from '@tiptap/extension-underline';
 import TaskList from "@tiptap/extension-task-list";
 import TaskItem from '@tiptap/extension-task-item'
+import Link from '@tiptap/extension-link';
 
 
 const NoteBox = (props: any) => {
     const { id, content, processUpdate } = props;
-    let hist = History.configure({
-        depth: 100,
-    });
     const extensions = [
         Document,
         Heading.configure({
@@ -49,7 +45,10 @@ const NoteBox = (props: any) => {
         TaskItem.configure({
             nested: true,
         }),
-        hist,
+        History.configure({
+            depth: 100,
+        }),
+        Link,
         Typography,
         Strike,
         Code,
@@ -64,7 +63,6 @@ const NoteBox = (props: any) => {
         OrderedList,
         BulletList,
         ListItem,
-        Youtube,
     ];
 
     const editor = useEditor({

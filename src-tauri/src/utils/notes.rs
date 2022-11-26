@@ -29,7 +29,6 @@ pub fn generate_preview(content: String) -> NotePreview {
                                         }
                                     }
                                 }
-                            } else if element["type"] == "paragraph" && i == 0 {
                             }
                             i += 1;
                         }
@@ -42,7 +41,7 @@ pub fn generate_preview(content: String) -> NotePreview {
         }
     }
     if title.len() > 2 {
-        title = match substr(title.as_str(), 1, Some((title.len() - 2).min(54))) {
+        title = match substr(title.as_str(), 1, Some((title.len() - 2).min(100))) {
             Ok(str) => str,
             Err(str) => str,
         }

@@ -59,7 +59,6 @@
         @apply text-sm cursor-pointer;
     }
 
-<<<<<<< HEAD
     /*  code::before {
         content: "`";
         @apply text-xs;
@@ -114,6 +113,4 @@ main {
     100% {
         background-position: 0% 50%;
     }
-=======
->>>>>>> b0770ebf62d278980b2c82053b3cb9b1cd0236bc
 }

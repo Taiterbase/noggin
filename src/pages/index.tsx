@@ -14,7 +14,7 @@ function HomePage(props: any) {
 
             <main className="h-screen overflow-auto ">
 
-                <div className='fixed px-10 pt-5 flex justify-between h-20 w-full bg-transparent backdrop-blur-sm'>
+                <div className='px-10 pt-5 flex justify-between h-20 w-full'>
                     <a href='#' className='leading-5 text-center before:content-none after:content-none'>
                         <p className='text-2xl font-bold text-white'>Noggin</p>
                     </a>
@@ -23,20 +23,38 @@ function HomePage(props: any) {
                     </a>
                 </div>
 
-                <div className="mt-20 flex flex-col">
-                    <p className="text-white text-6xl font-bold text-center fade-in">Your new favorite <br></br>Markdown, note-taking, <br></br> open-source app</p>
+                <div className="z-20 my-20 flex flex-col">
+                    <p className="text-white text-6xl font-bold text-center fade-in">Your new favorite note-taking app</p>
+                    <p className="text-blue-500 text-2xl text-center pt-4 fade-in">Noggin is a Markdown-based app with in-place rendering so that your text <br></br>changes instantly instead of having to look at another window!</p>
                     <div className="flex justify-center mt-10">
                         <Image
                             src={SS}
                             alt={'Screenshot of Noggin'}
-                            height={500}
-                            width={600}
+                            height={530}
+                            width={630}
                         />
+                    </div>
+                    <div className="text-center content-between">
+                        <button className="my-8 mx-8 px-4 py-8 bg-blue-500 rounded-2xl" disabled>MacOS Download</button>
+                        <button className="my-8 mx-8 px-4 py-8 bg-blue-500 rounded-2xl" disabled>Windows Download</button>
                     </div>
                     <div>
                         <p className="text-center text-white text-2xl pt-6 fade-in">Noggin is built with Rust, Typescript, NextJS, and TailwindCSS.<br></br> Please take a look at our github repo and show some love!</p>
                     </div>
                 </div>
+
+                <footer className="z-50 w-full pt-3 border-t">
+                    <div className="max-w-screen mx-auto grid grid-cols-2 gap-6 p-8 pt-10 pb-20 m-auto text-white min-h-64 sm:grid-cols-2 lg:grid-cols-6">
+                        <div className="flex flex-col col-span-1 space-y-2">
+                            <h3 className="mb-1 text-xs font-bold uppercase before:content-none after:content-none">Downloads</h3>
+                            <a href="" target="" className="text-gray-300 hover:text-white before:content-none after:content-none">MacOS</a>
+                            <a href="" target="" className="text-gray-300 hover:text-white before:content-none after:content-none">Windows</a>
+                        </div>
+                        <div className="flex flex-col col-span-1 space-y-2">
+                            <h3 className="mb-1 text-xs font-bold uppercase before:content-none after:content-none">Contact</h3>
+                        </div>
+                    </div>
+                </footer>
             </main>
         </>
     )

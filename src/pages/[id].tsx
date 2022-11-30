@@ -47,7 +47,7 @@ function HomePage(props: any) {
     };
 
     return (
-        <div className="mb-5 w-full h-full flex flex-row justify-center overflow-y-auto">
+        <div className="mb-5 w-full h-full flex flex-row justify-center overflow-auto">
             <Notebox id={note.id} content={note.content} processUpdate={processUpdate} />
         </div>
     );

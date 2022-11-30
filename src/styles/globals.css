@@ -59,4 +59,58 @@
         @apply text-sm cursor-pointer;
     }
 
+    /*  code::before {
+        content: "`";
+        @apply text-xs;
+    }
+
+    code::after {
+        content: "`";
+        @apply text-xs;
+    } */
+
+    pre::before {
+        content: "</>";
+        @apply text-xs text-slate-500 -ml-[20px] -left-3 relative text-opacity-100 z-10;
+    }
+
+    pre code::before {
+        content: "";
+    }
+
+    pre code::after {
+        content: "";
+    }
+
+}
+
+.fade-in {
+    animation: fadeIn 5s forwards;
+    -webkit-animation: fadeIn 5s forwards;
+    -moz-animation: fadeIn 5s forwards;
+    -o-animation: fadeIn 5s forwards;
+    -ms-animation: fadeIn 5s forwards;
+}
+  
+@keyframes fadeIn {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+}
+
+main {
+    background: linear-gradient(45deg, #ffffff, #090827, #090827, #ffffff);
+    background-size: 400% 400%;
+    animation: gradient 8s ease infinite;
+}
+
+@keyframes gradient {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
 }

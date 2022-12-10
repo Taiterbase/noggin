@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -100,7 +102,8 @@
 main {
     background: linear-gradient(45deg, #ffffff, #090827, #090827, #ffffff);
     background-size: 400% 400%;
-    animation: gradient 8s ease infinite;
+    animation: gradient 20s ease infinite;
+    font-family: 'Montserrat', sans-serif;
 }
 
 @keyframes gradient {

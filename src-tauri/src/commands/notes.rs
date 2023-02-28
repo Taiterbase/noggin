@@ -29,19 +29,8 @@ pub async fn send_insert_note_request(
     let dbconstr = get_db_path();
     let conn = Connection::open(dbconstr)?;
     let mut stmt = conn.prepare(
-        "INSERT INTO notes (
-            content, 
-            modified, 
-            created, 
-            archived, 
-            deleted
-        ) VALUES (
-            (?1), 
-            strftime('%s', 'now'), 
-            strftime('%s', 'now'), 
-            0, 
-            0
-        );",
+        "INSERT INTO notes (content, modified, created, archived, deleted) 
+        VALUES ((?1), strftime('%s', 'now'), strftime('%s', 'now'), 0, 0);",
     )?;
     let _createres = stmt.execute([note.content]);
     let id = conn.last_insert_rowid();
@@ -159,7 +148,10 @@ async fn send_note_read_all_request() -> Result<Vec<NoteCardResponse>> {
     let conn = Connection::open(dbconstr)?;
     let mut notes: Vec<NoteCardResponse> = Vec::new();
     let mut stmt = conn.prepare(
-        "SELECT id, content, modified, created, archived FROM notes WHERE archived <> 1 AND deleted <> 1 ORDER BY modified DESC;",
+        "SELECT id, content, modified, created, archived 
+        FROM notes 
+        WHERE archived <> 1 AND deleted <> 1 
+        ORDER BY modified DESC;",
     )?;
     let res = stmt.query_map([], |row| {
         let content: String = match row.get(1) {

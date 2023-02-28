@@ -1,6 +1,6 @@
 # Noggin
 
-Noggin is a place to put your thoughts. It's frustrating to use right now and needs lots of love.
+Loggin' for your noggin. It's frustrating to use right now and needs lots of love.
 
 ## Write
 Noggin stores your notes in a local SQLite db and gives you CRUD functionality.

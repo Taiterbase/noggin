@@ -24,9 +24,9 @@ Download one of the releases!
 
 ## What's next?
 We're working on:
-- Hotkeys and Shortcuts
-- Search and Replace
 - Tagging
+- Search and Replace
+- Hotkeys, Gestures, and Shortcuts
 - iCloud Sync
 
 Enjoy your new native Markdown editor in Rust!
